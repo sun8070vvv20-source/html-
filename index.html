@@ -1,0 +1,1711 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="서울영화센터 사용자 기획서(화면설계서) 인수인계용 요약 정리. 원본 PDF 기반." />
+  <title>서울영화센터 사용자 기획서 인수인계 요약</title>
+
+  <!-- Netlify Drop / single-file deploy friendly:
+       - CSS/JS are embedded (no external assets)
+       - Avoids frameworks/build steps
+  -->
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #121212;
+      --muted: #666;
+      --border: rgba(0,0,0,.12);
+      --card: rgba(0,0,0,.03);
+      --accent: #1f6feb;
+      --accent-weak: rgba(31,111,235,.12);
+      --danger: #c62828;
+      --warn: #b26a00;
+      --ok: #0b7a3d;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0f14;
+        --fg: #e6edf3;
+        --muted: #9aa4af;
+        --border: rgba(255,255,255,.14);
+        --card: rgba(255,255,255,.06);
+        --accent: #58a6ff;
+        --accent-weak: rgba(88,166,255,.15);
+        --danger: #ff6b6b;
+        --warn: #ffb74d;
+        --ok: #57d18b;
+        --shadow: 0 10px 30px rgba(0,0,0,.35);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      background: var(--bg);
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .brand h1 {
+      font-size: 16px;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .brand .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .search input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--fg);
+      outline: none;
+    }
+    .search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-weak);
+    }
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: var(--card);
+      color: var(--fg);
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      border-color: var(--accent);
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-section-title {
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: var(--fg);
+      border: 1px solid transparent;
+    }
+    .nav a:hover {
+      background: var(--card);
+      border-color: var(--border);
+      text-decoration: none;
+    }
+    .nav a.active {
+      background: var(--accent-weak);
+      border-color: rgba(31,111,235,.35);
+    }
+
+    .content {
+      padding: 20px 22px 60px;
+      max-width: 1080px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .topbar .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .kpi {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0 22px;
+    }
+    .kpi .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .kpi .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .kpi .value {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+
+    section {
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      margin: 12px 0;
+    }
+
+    section > h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    h4 {
+      margin: 14px 0 6px;
+      font-size: 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .callout {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px 12px;
+      margin: 10px 0;
+    }
+    .callout strong {
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+    .tag.ok { border-color: rgba(11,122,61,.35); background: rgba(11,122,61,.10); }
+    .tag.warn { border-color: rgba(178,106,0,.35); background: rgba(178,106,0,.10); }
+    .tag.danger { border-color: rgba(198,40,40,.35); background: rgba(198,40,40,.10); }
+    .tag.accent { border-color: rgba(31,111,235,.35); background: rgba(31,111,235,.10); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .content { padding: 16px; }
+      .kpi { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      padding: 10px 12px;
+      margin: 10px 0;
+    }
+    details > summary {
+      cursor: pointer;
+      font-weight: 650;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] { background: transparent; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 6px;
+      font-size: 13px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+    code, pre {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    pre {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      overflow: auto;
+    }
+
+    .toc-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .floating {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 8px;
+      z-index: 99;
+    }
+    .floating .btn {
+      box-shadow: var(--shadow);
+      background: var(--bg);
+    }
+
+    @media print {
+      .sidebar, .floating, .topbar .actions { display: none !important; }
+      .app { grid-template-columns: 1fr; }
+      body { background: #fff; color: #000; }
+      section { break-inside: avoid; }
+      a { color: #000; text-decoration: underline; }
+      .tag { border: 1px solid #000; background: #fff; }
+    }
+  
+/* --- v2.0 handover readability & mobile-first polish (no gradients) --- */
+
+/* Better typography + overflow safety */
+body {
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+h1, h2, h3, h4, p, li { overflow-wrap: anywhere; }
+code { overflow-wrap: anywhere; word-break: break-word; }
+pre code { word-break: break-all; }
+
+.content {
+  margin: 0 auto;
+  width: 100%;
+  justify-self: center;
+}
+.grid-2 > *, .kpi .card, .topbar, section, details { min-width: 0; }
+
+/* Section emphasis (visibility up) */
+section {
+  background: var(--bg);
+  box-shadow: none;
+}
+section > h2 {
+  font-size: clamp(18px, 1.8vw, 22px);
+}
+h3 { font-size: clamp(15px, 1.35vw, 17px); }
+h4 { font-size: clamp(14px, 1.2vw, 15px); }
+
+p { margin: 0 0 10px; }
+ul, ol { margin: 8px 0 10px; }
+li { margin: 4px 0; }
+
+/* Intro (요약/요건) */
+.detail-title {
+  margin-top: 14px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+.req {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.req li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.req .text { flex: 1; min-width: 0; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.badge.must { border-color: rgba(11,122,61,.40); background: rgba(11,122,61,.12); }
+.badge.should { border-color: rgba(31,111,235,.40); background: rgba(31,111,235,.12); }
+.badge.confirm { border-color: rgba(178,106,0,.45); background: rgba(178,106,0,.14); }
+.badge.risk { border-color: rgba(198,40,40,.45); background: rgba(198,40,40,.12); }
+
+/* Details accordion: clearer tap targets */
+details {
+  background: var(--card);
+}
+details[open] {
+  background: var(--bg);
+}
+details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}
+details > summary::after {
+  content: "▸";
+  color: var(--muted);
+  font-size: 14px;
+  transform: rotate(0deg);
+  transition: transform .15s ease;
+  flex: 0 0 auto;
+}
+details[open] > summary::after { transform: rotate(90deg); }
+details > summary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-weak);
+  border-radius: 10px;
+}
+
+/* Tables: mobile safe (no layout overflow) */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  margin: 10px 0 6px;
+}
+.table-wrap table {
+  min-width: 720px;
+  margin: 0;
+}
+.table-wrap th, .table-wrap td {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Mobile menu */
+.mobile-only { display: none; }
+.mobile-menu { margin: 8px 0 12px; }
+.mobile-menu .btn { width: 100%; }
+
+@media (max-width: 960px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--bg);
+  }
+  .mobile-only { display: block; }
+  #sidebar .nav { display: none; }
+  #sidebar.open .nav { display: grid; }
+  #sidebar.open {
+    box-shadow: var(--shadow);
+  }
+
+  section { padding: 14px 14px; scroll-margin-top: 220px; }
+  .btn, .search input { min-height: 44px; }
+  .floating {
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .floating .btn {
+    min-height: 44px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <h1>서울영화센터 사용자 기획서<br/>인수인계용 요약</h1>
+        <div class="meta">
+          <div>원본: <span class="muted">영화센터 사용자 기획서_20260224갱신.pdf</span></div>
+          <div>요약 기준: <span class="muted">ver1.5 (문서 표기 2025-10-23)</span></div>
+          <div>파일명 갱신일 추정: <span class="muted">2026-02-24</span></div>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="q" type="search" placeholder="검색 (Ctrl+K) — 예: 디트릭스, UI-MV, 시설대관, 환불" autocomplete="off" />
+        <button class="btn" id="clearBtn" type="button">지우기</button>
+      </div>
+
+      <div class="mobile-only mobile-menu">
+        <button class="btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">메뉴</button>
+      </div>
+
+      <nav class="nav" id="nav" aria-label="섹션 메뉴">
+        <div class="nav-section-title">핵심</div>
+        <a href="#overview">1. 문서 개요</a>
+        <a href="#ia">2. IA / 화면 체계</a>
+        <a href="#integrations">3. 연동/외부 시스템</a>
+        <a href="#crosscutting">4. 공통 정책/룰</a>
+
+        <div class="nav-section-title">기능 모듈</div>
+        <a href="#auth">5. 회원/인증</a>
+        <a href="#movie">6. 영화 예매/확인</a>
+        <a href="#exhibition">7. 전시·행사</a>
+        <a href="#education">8. 교육</a>
+        <a href="#facility">9. 시설대관</a>
+        <a href="#membership">10. 멤버십</a>
+        <a href="#filmMembership">11. 영화인 멤버십</a>
+        <a href="#seoulmoviecenter">12. 서울영화센터(정보/고객센터)</a>
+        <a href="#calendar">13. 통합캘린더</a>
+        <a href="#search">14. 통합검색</a>
+        <a href="#mypage">15. 마이페이지</a>
+
+        <div class="nav-section-title">인수인계 체크</div>
+        <a href="#todo">16. 확인 필요/리스크</a>
+        <a href="#appendix">17. 부록</a>
+      </nav>
+
+      <p class="toc-note">Tip: 섹션 이동 후 URL이 바뀌면, 그 링크를 그대로 공유하면 해당 위치로 바로 이동합니다.</p>
+    </aside>
+
+    <div class="content">
+      <div class="topbar">
+        <div>
+          <div class="muted" style="font-size: 12px;">(Netlify Drop 업로드용) 단일 파일 HTML · 반응형 · 다크모드 · 프린트 지원</div>
+        </div>
+        <div class="actions">
+          <button class="btn" type="button" id="expandAllBtn">모두 펼치기</button>
+          <button class="btn" type="button" id="collapseAllBtn">모두 접기</button>
+          <button class="btn" type="button" onclick="window.print()">인쇄 / PDF 저장</button>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="card">
+          <div class="label">문서 범위(대분류)</div>
+          <div class="value">회원/인증 · 영화예매 · 전시/행사 · 교육 · 시설대관 · 멤버십 · 고객센터 · 검색/캘린더 · 마이페이지</div>
+        </div>
+        <div class="card">
+          <div class="label">핵심 외부 연동</div>
+          <div class="value">디트릭스(API/예매솔루션) · KOBIS(Open API) · 알림톡(운영)</div>
+        </div>
+        <div class="card">
+          <div class="label">인수인계 관점</div>
+          <div class="value">“무엇이 어디서 관리되고”, “어떤 상태값/규칙으로 흘러가며”, “확인 필요한 기능이 무엇인지”를 빠르게 파악</div>
+        </div>
+      </div>
+
+      <section id="overview" data-filterable>
+        <h2>1. 문서 개요</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>원본 PDF(화면설계서)의 내용을 인수인계 목적에 맞게 ‘연동·상태값·운영 개입 지점’ 중심으로 재구성한 단일 HTML 요약본입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">원본 PDF를 최종 근거로 삼고, 본 페이지는 빠른 탐색/공유용 요약으로 사용합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">커뮤니케이션은 화면ID(예: UI-MV-01-002) 기준으로 통일합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">‘확인 필요/리스크’ 항목은 개발·운영 합의 후 문서/기능에 반영합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">섹션 링크(#앵커)로 필요한 위치를 공유해 인수인계 비용을 줄입니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+        <p>
+          이 페이지는 <strong>원본 PDF 화면설계서</strong>를 기반으로, 인수인계 목적에 맞게 <strong>핵심 기능/규칙/연동/상태값</strong> 중심으로 재구성한 요약본입니다.
+          “처음 보는 사람도” 프로젝트를 따라갈 수 있도록 <strong>IA → 연동 → 공통룰 → 모듈별 상세</strong> 순서로 정리했습니다.
+        </p>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>원본 문서 정보</strong>
+            <ul>
+              <li>표지 표기: <strong>2025 서울영화센터 서브페이지 화면설계기획 화면설계서(제출용) ver1.5, 2025-10-23</strong></li>
+              <li>업로드된 파일명: <strong>영화센터 사용자 기획서_20260224갱신.pdf</strong> (파일명 기준 “갱신” 표기)</li>
+              <li>총 226p (화면/플로우/문구/예외 포함)</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>이 요약본 사용법</strong>
+            <ol>
+              <li>좌측 검색으로 키워드(예: <code>UI-MV</code>, <code>입금확인완료</code>, <code>쿠폰</code>)를 찾습니다.</li>
+              <li>모듈 단위로 “업무 규칙”, “상태값”, “운영/관리자 개입 지점”, “연동 여부”를 확인합니다.</li>
+              <li>마지막 “확인 필요/리스크” 섹션을 보고, 개발/운영 전 확인해야 할 포인트를 체크합니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <details>
+          <summary>제·개정 이력(요약)</summary>
+          <ul>
+            <li><strong>v0</strong>: 최초 작성(2025-07-03)</li>
+            <li><strong>고객사 배포</strong>: 소셜로그인/마이페이지/시설대관·영화인멤버십 결제 프로세스/통합검색·캘린더 등 변경 누적</li>
+            <li><strong>v1.5(고객사 5차 배포, 2025-10-23)</strong>: 웹 취약점 진단 대응(로그인 실패 문구 수정), 영화인 멤버십 관심영화 정보 설정 추가, 약관/운영규정 반영 등</li>
+          </ul>
+          <p class="muted">※ 원본 PDF의 개정 이력 표는 일부 버전 표기가 섞여 있으나(감리대응 포함), 인수인계 목적상 “기능 추가/변경 축”만 요약했습니다.</p>
+        </details>
+      </section>
+
+      <section id="ia" data-filterable>
+        <h2>2. IA / 화면 체계</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>문서는 UI-XX 화면ID 체계를 기준으로 IA(메뉴/화면)를 관리합니다. 인수인계·QA·개발 협업에서 화면ID가 공통 언어 역할을 합니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">화면ID 프리픽스(UI-JU/UI-AU/UI-MV 등)와 모듈(메뉴) 매핑을 유지합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">GNB/메뉴는 영화·전시·행사·교육·시설대관·센터소개·캘린더·검색·마이페이지 축을 기준으로 구성합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">원본 PDF의 ‘화면ID 목차’와 실제 구현 화면/URL의 1:1 대조표를 만들어 운영/QA 기준점을 고정합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">화면(라우팅/컴포넌트)에 screen-id 메타데이터를 남겨 커뮤니케이션 비용을 줄입니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <p class="muted">
+          원본은 화면ID 체계를 사용합니다(예: <code>UI-MV-01-002</code>). 인수인계/협업 시 “화면ID”로 커뮤니케이션하면 가장 빠릅니다.
+        </p>
+
+        <details open>
+          <summary>화면ID 대분류(모듈 코드)</summary>
+          <div class="table-wrap">
+
+          <table>
+<thead>
+              <tr>
+                <th style="width: 160px;">모듈</th>
+                <th>화면ID 예시</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>회원가입</strong></td>
+                <td><code>UI-JU-01</code></td>
+                <td>일반/어린이 회원가입, 약관동의, 본인인증 등</td>
+              </tr>
+              <tr>
+                <td><strong>로그인</strong></td>
+                <td><code>UI-AU-01</code></td>
+                <td>일반 로그인/소셜 로그인, 실패/잠금 관련 문구 포함</td>
+              </tr>
+              <tr>
+                <td><strong>아이디·비밀번호 찾기</strong></td>
+                <td><code>UI-FI-01</code></td>
+                <td>휴대폰 인증/이메일 인증 분리 등</td>
+              </tr>
+              <tr>
+                <td><strong>영화</strong></td>
+                <td><code>UI-MV-01~</code></td>
+                <td>영화예매 목록/상세/예매·좌석/예매내역 확인 등(디트릭스 연동)</td>
+              </tr>
+              <tr>
+                <td><strong>전시·행사</strong></td>
+                <td><code>UI-EV-01~</code></td>
+                <td>목록/상세, 상태태그/비고, 공유 기능 등</td>
+              </tr>
+              <tr>
+                <td><strong>교육</strong></td>
+                <td><code>UI-ED-01~</code></td>
+                <td>강좌 목록/상세, 신청, 마이페이지 결제/환불 등</td>
+              </tr>
+              <tr>
+                <td><strong>시설대관</strong></td>
+                <td><code>UI-FL-01~</code></td>
+                <td>시설 목록/상세, 예약 캘린더/좌석, 신청/결제 프로세스 등</td>
+              </tr>
+              <tr>
+                <td><strong>멤버십</strong></td>
+                <td><code>UI-MB-01</code></td>
+                <td>멤버십 안내/등급/혜택, 영화인 멤버십 신청 등</td>
+              </tr>
+              <tr>
+                <td><strong>서울영화센터</strong></td>
+                <td><code>UI-SM-01~</code></td>
+                <td>소개(다국어), 공지사항, 이벤트, FAQ, Q&A</td>
+              </tr>
+              <tr>
+                <td><strong>통합캘린더</strong></td>
+                <td><code>UI-CL-01</code></td>
+                <td>영화/전시·행사/교육 일정 통합</td>
+              </tr>
+              <tr>
+                <td><strong>통합검색</strong></td>
+                <td><code>UI-SE-01</code></td>
+                <td>영화/전시·행사/교육/시설대관/서울영화센터(서브메뉴 포함) 통합 검색</td>
+              </tr>
+              <tr>
+                <td><strong>마이페이지</strong></td>
+                <td><code>UI-MP-01~</code></td>
+                <td>신청내역/결제/취소·환불/쿠폰/소셜연동/회원탈퇴 등</td>
+              </tr>
+              <tr>
+                <td><strong>약관/정책</strong></td>
+                <td><code>UI-PR</code>, <code>UI-TU</code>, <code>UI-EM</code></td>
+                <td>개인정보처리방침/이용약관/이메일무단수집거부</td>
+              </tr>
+            </tbody>
+          </table>
+
+          </div>
+<p class="muted">※ 상세 화면 목록은 원본 PDF의 “화면ID 목차” 페이지를 참고하세요.</p>
+        </details>
+
+        <details>
+          <summary>GNB/메뉴 구조(요약)</summary>
+          <ul>
+            <li>주요 메뉴 축: <strong>영화예매/확인 · 전시·행사 · 교육 · 시설대관 · 서울영화센터 · 통합캘린더 · 통합검색 · 마이페이지</strong></li>
+            <li>마이페이지 내부: 신청현황(교육/시설대관/영화인멤버십), 결제, 취소/환불, 쿠폰, 상담(Q&A) 등</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="integrations" data-filterable>
+        <h2>3. 연동/외부 시스템</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>외부 연동은 디트릭스(영화 예매), KOBIS(영화인 검색), 소셜로그인(카카오/네이버), 알림톡(운영)이 핵심 축입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">영화 예매/확인은 디트릭스(API/솔루션) 연동 범위(영화정보·상영시간·좌석·할인·결제·취소)를 확정합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">영화인 멤버십 신청/수정은 KOBIS Open API 기반 영화인 검색/선택 UI를 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">소셜 로그인은 ‘홈페이지 가입 여부 확인 불가’에 따른 미가입/미연동 분기 플로우를 포함합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">알림톡 발송 시점·대상(어린이 교육 포함)·템플릿을 운영과 합의해 고정합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">관리자(백오피스)에서 직접 관리되는 콘텐츠/미디어/정책의 데이터 소스와 권한을 명확히 정의합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>연동 요약</summary>
+          <div class="table-wrap">
+
+          <table>
+<thead>
+              <tr>
+                <th style="width: 160px;">연동 대상</th>
+                <th>사용 위치</th>
+                <th>핵심 포인트</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>디트릭스(Dtryx) API/예매솔루션</strong></td>
+                <td>영화예매/확인, 통합캘린더(영화), (통합검색-영화는 확인 필요)</td>
+                <td>
+                  영화 정보/상영시간/좌석/할인/결제/예매확인 흐름. 문서에 “영화예매 솔루션 연동” 명시.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>KOBIS Open API</strong></td>
+                <td>영화인 멤버십 신청/수정(영화인 검색), 영화사 정보(지난상영작 연계)</td>
+                <td>
+                  영화인명/코드/분야/필모그래피 등. 카테고리+키워드 방식(영화인명/필모) 검색.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>알림톡(운영)</strong></td>
+                <td>교육 접수마감/선정 안내, 교육 결제 안내, 영화인 멤버십 신청확정/반려 등</td>
+                <td>
+                  발송 대상: 신청자 휴대폰 번호(어린이 교육은 신청자+자녀 번호).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>소셜 로그인(Kakao/Naver)</strong></td>
+                <td>로그인/회원가입, 마이페이지 소셜 계정 연동/해제</td>
+                <td>
+                  “홈페이지 가입 여부 확인 불가” 이슈로, 미가입/미연동 플로우를 별도로 둠.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          </div>
+</details>
+
+        <div class="callout">
+          <strong>관리자(백오피스)에서 직접 관리되는 요소(대표 예시)</strong>
+          <ul>
+            <li>영화 상세의 “메인 예고편 영상”, 스틸컷 등 일부 미디어(문서 내 ‘관리자에서 설정/등록’ 표기)</li>
+            <li>전시/행사/이벤트/공지/FAQ/Q&A 콘텐츠</li>
+            <li>교육 강좌/모집/선정/입금확인/수료 처리</li>
+            <li>시설대관 시설 정보/대관료/예약 가능 상태/입금확인</li>
+            <li>멤버십 안내/혜택, 쿠폰 발급/사용 가능 여부(운영정책 반영)</li>
+          </ul>
+          <p class="muted">※ 정확한 관리자 기능 범위/데이터 소스는 원본 설계서 및 별도 “운영 규정/관리자 설계서”가 있으면 함께 확인하세요.</p>
+        </div>
+      </section>
+
+      <section id="crosscutting" data-filterable>
+        <h2>4. 공통 정책/룰</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>여러 모듈에서 공통으로 쓰이는 상태값 패턴, 파일 업로드 정책, 로그인 보안 규칙을 한 번에 정리한 섹션입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">모듈별 상태값/전이(버튼 노출 조건 포함)를 표로 확정하고 코드(Enum)와 1:1 매핑합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">파일 업로드는 허용 확장자·용량(30MB)·단일 업로드 등 정책을 프론트/서버에서 동시에 검증합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">보안 요구에 따라 MIME 검증·악성 파일 스캔·보관/삭제 정책을 추가 확정합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">일반 로그인 5회 실패 시 확인창/문구 등 보안 정책을 실제 동작 기준으로 구현·검증합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>상태값(프로세스) 공통 축</summary>
+          <p>문서상 여러 신청/결제 흐름이 공통적으로 아래 패턴을 가집니다.</p>
+          <ul>
+            <li><strong>신청/접수</strong> → <strong>승인/반려(또는 선정/미선정)</strong> → <strong>입금/결제 안내</strong> → <strong>입금확인</strong> → <strong>완료</strong></li>
+            <li>“입금확인완료”까지는 시설대관/영화인 멤버십이 동일 프로세스를 공유한다는 설명이 존재합니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>파일 업로드 정책(대표)</summary>
+          <div class="table-wrap">
+
+          <table>
+<thead>
+              <tr>
+                <th style="width: 220px;">구분</th>
+                <th>허용 형식</th>
+                <th>제한</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>교육 신청내역 수정(첨부)</td>
+                <td><code>hwp, pdf, doc, docx</code></td>
+                <td>단일 업로드, 30MB 이하, 필수 첨부</td>
+              </tr>
+              <tr>
+                <td>시설대관 신청(대관신청서)</td>
+                <td><code>hwp, pdf, doc, docx, xls, xlsx, ppt, pptx</code></td>
+                <td>단일 업로드, 30MB 이하</td>
+              </tr>
+              <tr>
+                <td>영화인 멤버십 신청(증빙 등)</td>
+                <td><code>pdf, jpg/jpeg, png, svg</code></td>
+                <td>단일 업로드, 30MB 이하</td>
+              </tr>
+            </tbody>
+          </table>
+
+          </div>
+<p class="muted">※ 업로드 정책은 운영/보안(웹취약점 진단)과도 연관되므로, 실제 구현 시 서버 측 검증(MIME/확장자/바이러스 스캔 등) 기준을 별도로 확정하세요.</p>
+        </details>
+
+        <details>
+          <summary>로그인 보안/제한</summary>
+          <ul>
+            <li>일반 로그인에서 <strong>로그인 정보 5회 불일치 시 시스템 확인창</strong> 추가(감리/웹취약점 대응 이력에 포함).</li>
+            <li>소셜 로그인은 “홈페이지 가입 여부를 판단할 수 없음” 이슈로 별도 안내/연동 플로우를 둠.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="auth" data-filterable>
+        <h2>5. 회원/인증</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>회원가입(일반/어린이), 로그인(일반/소셜), 아이디·비밀번호 찾기 등 인증 전반을 다룹니다. 소셜 연동 분기와 보안 문구가 핵심입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">일반/어린이 회원가입 플로우를 분리하고, 문서 기준 필드·본인인증 수단을 적용합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">카카오/네이버 소셜 로그인과 마이페이지 내 소셜 계정 연동/해제를 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">로그인 실패 5회 정책 및 안내 문구(웹취약점 진단 대응 이력)를 반영합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">아이디/비밀번호 찾기의 인증 수단(휴대폰/이메일) 최종안을 확정하고 예외 케이스를 정리합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>회원가입(일반/어린이) 핵심 포인트</summary>
+          <ul>
+            <li>일반/어린이 가입 플로우가 분리되어 있으며, 본인인증 수단/필드가 개정 이력에서 여러 번 변경되었습니다(이메일 ↔ 아이핀 등).</li>
+            <li>회원가입 시 선호장르 정보를 활용해 영화 영역에서 “이 영화 어때요?” 추천 아이콘에 영향을 줍니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>소셜 로그인(네이버/카카오)</summary>
+          <ul>
+            <li>소셜 제공 데이터만으로 “이미 홈페이지 회원인지” 판단이 어렵다는 사유로, <strong>미가입/미연동 확인창</strong>을 둡니다.</li>
+            <li>네이버는 “네이버 식별자”로 기존 가입자 여부를 판단하는 흐름이 설계되어 있습니다.</li>
+            <li>마이페이지에서 소셜 계정 연동/해제 가능(연동 시 연결 상태 표시, 해제 시 확인창).</li>
+          </ul>
+
+          <div class="tags">
+            <span class="tag accent">Kakao</span>
+            <span class="tag accent">Naver</span>
+            <span class="tag warn">연동/미가입 분기</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>아이디/비밀번호 찾기</summary>
+          <ul>
+            <li>아이디/비밀번호 찾기 인증 수단이 분리(휴대폰 인증/이메일 인증), 비밀번호 찾기에서 이메일 본인인증 수단 추가 등 이력이 존재합니다.</li>
+            <li>실제 구현 시 “어떤 인증수단이 최종 확정인지”는 운영/정책 문서(또는 개발 완료 버전)와 대조 필요합니다.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="movie" data-filterable>
+        <h2>6. 영화 예매/확인</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>디트릭스 연동 기반으로 영화 목록/상세/예매(좌석·할인·결제)와 예매확인을 제공합니다. 비회원 예매/확인도 포함됩니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">디트릭스 연동으로 영화정보·상영시간·좌석·할인·결제·예매확인 흐름을 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">회원 예매내역 + 비회원 예매 및 확인 플로우를 모두 지원합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">인원/좌석/할인 선택 단계에서 제약(할인 불가 등)과 오류 안내를 명확히 노출합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">선호장르 기반 ‘이 영화 어때요?’ 아이콘 노출 조건을 구현합니다.</span></li>
+              <li><span class="badge confirm">확인</span><span class="text">영화 상세의 ‘메인 예고편 영상’이 관리자 설정/불러오기인지 연동 범위를 확인합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>기능 범위</summary>
+          <ul>
+            <li><strong>상영예매(상영중/상영예정)</strong> 목록, 상세</li>
+            <li><strong>인원/좌석 선택</strong>, 할인 선택, 결제</li>
+            <li><strong>예매내역 확인</strong>(회원), <strong>비회원 예매 및 확인</strong></li>
+            <li><strong>지난 상영작</strong> 목록/상세(아카이브 성격)</li>
+            <li><strong>할인혜택 안내</strong> 페이지(운영 규정 반영)</li>
+          </ul>
+          <div class="tags">
+            <span class="tag accent">디트릭스 연동</span>
+            <span class="tag warn">관리자 설정(예고편)</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>디트릭스 연동 포인트(요약)</summary>
+          <ul>
+            <li>영화 정보(제목/개봉일/장르/러닝타임 등)를 디트릭스 API로 불러오는 설계가 포함됩니다.</li>
+            <li>영화 예매는 “디트릭스 영화예매 솔루션 연동”으로 명시되어 있습니다.</li>
+            <li>할인 선택은 디트릭스에서 할인 종류 정보를 불러오며, 조건에 따라 “할인 적용이 불가합니다” 등의 안내가 노출됩니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>추천/태그</summary>
+          <ul>
+            <li>“이 영화 어때요?” 아이콘: 회원가입 시 등록된 선호장르에 해당하는 영화일 경우 표시.</li>
+            <li>상영 상태 태그 예: 상영예정(D-남은일수), 상영중, 상영마감 등.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>운영/확인 포인트</summary>
+          <ul>
+            <li>영화 상세에서 “메인 예고편 영상”은 <strong>관리자에서 설정한 영상 불러오기(기능 확인 필요)</strong>로 명시되어 있습니다.</li>
+            <li>예매 취소 가능 시간/극장별 유의사항 등은 예매내역에서 표기합니다.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="exhibition" data-filterable>
+        <h2>7. 전시·행사</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>전시·행사는 게시형 콘텐츠로 목록/상세, 진행상태 태그, 비고, 공유 기능이 핵심입니다. 통합검색/캘린더 노출도 함께 고려합니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">전시·행사 목록/상세 + 진행상태 태그 + 비고 + 공유(링크 복사 등) 기능을 제공합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">통합검색/캘린더 노출 필드(제목/기간/장소/썸네일/태그) 정합성을 운영 기준으로 관리합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">상태 태그 워딩(예: ‘종료’) 및 표시 규칙을 운영과 합의해 고정합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>기능 범위</summary>
+          <ul>
+            <li>전시·행사 목록/상세(진행상태 태그 포함)</li>
+            <li>상세 상단 비고 항목, 공유 기능(링크 복사 등) 설계가 포함됩니다.</li>
+            <li>진행상태 워딩 개정 이력: “진행종료 → 종료”</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>운영 포인트</summary>
+          <ul>
+            <li>콘텐츠(전시/행사 정보)는 관리자에서 관리되는 전형적인 게시형 구조로 보입니다.</li>
+            <li>통합캘린더/통합검색에도 노출되므로, 노출 필드(제목/기간/장소/썸네일/태그) 일관성 중요.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="education" data-filterable>
+        <h2>8. 교육</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>교육 신청은 강좌 접수 후 ‘접수 마감 뒤 결제(마이페이지)’ 구조가 특징입니다. 쿠폰, 알림톡, 취소/환불, 첨부파일 정책이 포함됩니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">교육 신청/신청완료 흐름과 ‘접수 마감 후 결제(마이페이지)’ 정책을 구현합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">결제(무통장입금), 쿠폰 선택, 결제 안내 알림톡 발송(어린이 교육: 신청자+자녀)을 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">취소/환불(환불계좌 등록 → 환불요청 → 관리자 처리) 흐름과 상태 필터를 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">교육 첨부파일 업로드 정책(단일/30MB/허용 확장자/필수 여부)을 반영합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">교육 유형(영화인 교육/일반 교육) 분류 및 문구/노출 규칙을 문서 기준으로 적용합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>핵심 흐름</summary>
+          <ol>
+            <li><strong>교육강좌 목록/상세</strong>에서 신청</li>
+            <li>신청 완료 화면(유형별 안내 문구 상이)</li>
+            <li><strong>결제는 “접수 마감 후”</strong> 진행(마이페이지 신청내역에서 결제)</li>
+            <li>입금 확인/상태 변경(관리자 처리 + 일부 자동 변경)</li>
+            <li>필요 시 취소/환불(환불계좌 등록 후 환불요청)</li>
+          </ol>
+          <div class="tags">
+            <span class="tag warn">무통장입금(계좌)</span>
+            <span class="tag accent">알림톡</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>유형(개정 이력 반영)</summary>
+          <ul>
+            <li>기존: 성인/어린이/청소년 → 변경: <strong>영화인 교육(영화인 대상)</strong>, <strong>일반 교육(전체/성인/어린이·청소년)</strong></li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>결제/쿠폰</summary>
+          <ul>
+            <li>마이페이지 결제 화면에서 <strong>쿠폰 드롭다운</strong>으로 미사용 강좌 할인 쿠폰을 선택(없으면 “사용 가능한 쿠폰이 없습니다”).</li>
+            <li>입금계좌: 서울영화센터 계좌 표시, 입금자명: 회원가입 시 등록된 이름.</li>
+            <li>결제하기 완료 후 결제 안내 알림톡 발송(어린이 교육은 신청자+자녀 번호).</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>상태/취소·환불</summary>
+          <ul>
+            <li>마이페이지 취소/환불내역 탭(교육/시설대관) 제공.</li>
+            <li>교육 상태 필터 예시: 대기신청취소, 신청취소, 수강취소, 환불요청, 환불완료.</li>
+            <li>환불요청 버튼 클릭 시 환불요청 확인창 → 환불계좌 등록 모달 등 흐름이 설계되어 있습니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>첨부파일</summary>
+          <ul>
+            <li>교육 신청/수정 시 <strong>첨부파일 업로드</strong>가 포함됩니다(형식/용량 제한 존재).</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="facility" data-filterable>
+        <h2>9. 시설대관</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>시설대관은 시설별 예약 규칙(캘린더/시간/좌석)과 신청 후 입금확인 기반 상태관리가 핵심입니다. 공유오피스는 영화인 멤버십만 예약 가능으로 명시됩니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">시설 목록/상세, 예약 캘린더/시간 선택(상영관은 좌석 선택), 대관 신청(파일 첨부)을 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">시설 유형별 최소 예약 단위/날짜 범위 등 예약 규칙을 적용합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">공유오피스 예약은 영화인 멤버십 회원만 가능하도록 권한/가드를 구현합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">입금확인 프로세스(계약금/잔금 등 운영 관리 포인트 포함)를 반영합니다.</span></li>
+              <li><span class="badge confirm">확인</span><span class="text">예약폼 상세 기능(상태 색상 규칙 등) ‘확인 필요’ 항목을 실제 운영/구현 기준으로 확정합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>기능 범위</summary>
+          <ul>
+            <li>시설대관 목록/상세(시설별 안내/대관료/신청서 양식)</li>
+            <li>예약 캘린더/시간 선택, (상영관은 좌석 선택 포함)</li>
+            <li>대관 신청(파일 첨부), 입금/승인/완료 상태 관리</li>
+          </ul>
+          <div class="tags">
+            <span class="tag warn">무통장입금(계좌)</span>
+            <span class="tag warn">기능 확인 필요(문서 표기)</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>예약(캘린더/시간/좌석) 핵심</summary>
+          <ul>
+            <li>예약폼 상세 기능 확인(문서 내 명시).</li>
+            <li>시설 유형(상영관/다목적실/회의실/공유오피스)별로 최소 예약 시간 단위 및 날짜 선택 범위가 다릅니다.</li>
+            <li><strong>공유오피스는 영화인 멤버십 회원만 예약 가능</strong>이라고 명시되어 있습니다.</li>
+            <li>상영관은 좌석 선택: 이미 예약된 좌석은 선택 불가, 좌석 선택은 필수.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>결제/운영</summary>
+          <ul>
+            <li>시설대관 신청 후 입금 확인 프로세스가 있으며, <strong>계약금/잔금 등은 운영에서 관리</strong>한다는 설명이 포함됩니다.</li>
+            <li>시설대관과 영화인 멤버십은 “입금확인완료”까지 공통 프로세스를 공유합니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>첨부파일(대관신청서)</summary>
+          <ul>
+            <li>신청서 다운로드 후 작성 → 파일 첨부 업로드</li>
+            <li>형식: <code>hwp, pdf, doc, docx, xls, xlsx, ppt, pptx</code> / 30MB 이하 / 단일 업로드</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="membership" data-filterable>
+        <h2>10. 멤버십</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>일반 멤버십은 연간(1~12월) 영화 관람 실적을 기준으로 등급(현무/주작/청룡/백호 등)을 산정하고 혜택/쿠폰을 제공합니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">등급 산정 기준(홈페이지 예매+관람완료만 집계, 현장예매 제외)과 산정 시점(매년 1월), 유지기간(1년)을 구현합니다.</span></li>
+              <li><span class="badge confirm">확인</span><span class="text">2026년 상반기 실적으로 일괄 적용 등 예외 규칙의 적용 범위/최신 정책을 확인합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">쿠폰/혜택 발급·사용 정책은 ‘운영 규정 반영’ 문서와 싱크를 맞춰 고정합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>일반 멤버십(등급/혜택)</summary>
+          <ul>
+            <li>등급 예시: <strong>현무, 주작, 청룡, 백호</strong></li>
+            <li>등급 산정: <strong>1년(1~12월) 영화 관람 실적</strong> 기준(홈페이지를 통해 예매 + 관람완료 건만 집계, 현장예매 제외).</li>
+            <li>2026년은 예외적으로 상반기(1~6월) 관람실적으로 일괄 적용한다는 설명이 포함됩니다.</li>
+            <li>등급 산정 시점: 매년 1월, 등급 유지 기간: 1년.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>쿠폰/할인(운영)</summary>
+          <ul>
+            <li>멤버십 혜택으로 쿠폰이 발급/노출될 수 있으며, 식음료 할인쿠폰의 경우 “매점에서 쿠폰 제시 → 직원이 할인 적용 확인 후 적용” 형태의 흐름이 설계되어 있습니다.</li>
+            <li>정확한 혜택/쿠폰 종류/발급 정책은 “홈페이지 약관 운영 규정 반영” 파일의 해당 시트(문서에서 참조)로 최종 확인 필요.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="filmMembership" data-filterable>
+        <h2>11. 영화인 멤버십</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>영화인 멤버십은 연회비(무통장입금) 기반 신청형 멤버십입니다. KOBIS 영화인 검색, 관심 영화 정보(필수), 상태값/환불 규정이 핵심입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">연회비 60,000원 무통장입금 + 상태값(입금확인중/완료, 확정/반려 등) 처리 흐름을 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">KOBIS Open API로 영화인 검색/선택 UI를 제공합니다(카테고리+키워드).</span></li>
+              <li><span class="badge must">필수</span><span class="text">관심 영화 정보(유형/제작국가/장르) 필수 입력을 반영합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">환불요청 가능 기간(입금확인완료 처리일 기준 7일) 룰을 구현합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">첨부파일 업로드 정책(단일/30MB/허용 확장자)과 ‘신청/반려 상태에서 수정 가능’ 범위를 반영합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>개요</summary>
+          <ul>
+            <li><strong>연회비 60,000원</strong> 결제(무통장입금)로 가입하는 별도 멤버십입니다.</li>
+            <li>신청 시 <strong>KOBIS 영화인 검색</strong>을 통해 영화인 정보를 조회/선택합니다.</li>
+            <li>관심 영화 정보(유형/제작국가/장르)를 선택합니다(필수).</li>
+          </ul>
+          <div class="tags">
+            <span class="tag accent">KOBIS 연동</span>
+            <span class="tag warn">무통장입금(계좌)</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>상태값(대표)</summary>
+          <p class="muted">문서에 언급된 상태값/흐름을 인수인계 관점으로 정리했습니다.</p>
+          <ul>
+            <li>신청 → (관리자) 입금확인중 → 입금확인완료</li>
+            <li>신청확정 / 신청반려 (상태 변경 시 알림톡 발송)</li>
+            <li>취소/환불요청 → 취소/환불완료</li>
+            <li>유효기간만료(유효기간 1년)</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>환불 규정(핵심)</summary>
+          <ul>
+            <li>환불요청은 <strong>입금확인완료 처리일 기준 7일 이내</strong> 가능.</li>
+            <li>7일 경과 시 환불 요청 불가로 안내됩니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>신청/수정과 첨부파일</summary>
+          <ul>
+            <li>신청/신청반려 상태일 경우 영화인 정보 및 관심 영화 정보 수정 가능.</li>
+            <li>첨부파일: <code>pdf, jpg/jpeg, png, svg</code> / 30MB 이하 / 단일 업로드.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="seoulmoviecenter" data-filterable>
+        <h2>12. 서울영화센터(정보/고객센터)</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>센터 소개(다국어)와 고객센터형 게시판(공지/이벤트/FAQ/Q&amp;A)으로 구성됩니다. Q&amp;A는 비밀글 처리 정책이 핵심입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">공지사항/이벤트/FAQ/Q&amp;A 등 게시판 기능과 관리자 답변 구조를 제공합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">Q&amp;A는 비밀글 처리 정책을 반영합니다(조회 권한/표시 규칙 포함).</span></li>
+              <li><span class="badge should">권장</span><span class="text">소개 페이지 다국어 처리(특정 언어 notranslate 등)는 운영과 합의 후 적용합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>구성</summary>
+          <ul>
+            <li>서울영화센터 소개(다국어)</li>
+            <li>공지사항</li>
+            <li>이벤트(탭: 기타 추가 이력)</li>
+            <li>FAQ(탭: 시설대관 추가 이력)</li>
+            <li>Q&A(모든 업로드 글 비밀글 처리)</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>다국어(소개 페이지)</summary>
+          <ul>
+            <li>소개 페이지에서 다국어 제공(번역 품질/정확도 이슈로 Google Translate 제외 언어에 <code>notranslate</code> 처리 등의 설명이 포함됨).</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Q&A(1:1 문의) 정책</summary>
+          <ul>
+            <li>모든 업로드 글은 비밀글로 처리된다는 개정 이력이 있습니다.</li>
+            <li>작성/상세/답변 구조(관리자 답변 포함)를 갖는 전형적인 1:1 문의 게시판 흐름입니다.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="calendar" data-filterable>
+        <h2>13. 통합캘린더</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>서울영화센터의 영화·전시·행사·교육 일정을 통합 조회합니다. 영화 일정은 디트릭스 API에서 실시간으로 불러옵니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">영화 일정은 디트릭스 API 기반으로 실시간 조회/표시합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">전시·행사/교육 일정은 관리자 데이터 정합성(기간/장소/노출 필드) 검증 루틴을 마련합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">타임존/변경/취소 등 이벤트에 대한 표시·캐시·장애 대응 정책을 확정합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>무엇을 보여주나?</summary>
+          <ul>
+            <li>서울영화센터에서 진행하는 <strong>영화 · 전시·행사 · 교육</strong> 일정 통합 조회</li>
+            <li>영화 일정은 <strong>실시간으로 디트릭스 API에서 정보 불러옴</strong></li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>운영 포인트</summary>
+          <ul>
+            <li>전시·행사/교육은 관리자 데이터 정합성이 중요(캘린더 노출 필드/기간/장소 등).</li>
+            <li>영화는 외부 연동(디트릭스)이므로 “타임존/상영시간 변경/상영취소” 같은 이벤트 처리 전략 확인 필요.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="search" data-filterable>
+        <h2>14. 통합검색</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>영화/전시·행사/교육/시설대관/서울영화센터(서브메뉴 포함)를 통합 검색합니다. 영화 결과의 데이터 소스는 문서에서 ‘확인 필요’로 남아 있습니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">카테고리별 통합검색 결과/필터 UX를 제공합니다(서울영화센터 서브메뉴 포함).</span></li>
+              <li><span class="badge confirm">확인</span><span class="text">영화 검색이 디트릭스 API 직접조회인지, 별도 콘텐츠 DB인지(범위/연결 포함) 확정합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">검색 색인/정렬/부분일치 규칙과 운영 가이드를 문서화합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>검색 대상(카테고리)</summary>
+          <ul>
+            <li><strong>영화</strong></li>
+            <li><strong>전시·행사</strong></li>
+            <li><strong>교육</strong></li>
+            <li><strong>시설대관</strong></li>
+            <li><strong>서울영화센터</strong> <span class="muted">(공지/이벤트/FAQ/Q&amp;A 등 서브 메뉴 포함)</span></li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>확인 필요</summary>
+          <ul>
+            <li>문서에 “영화예매는 확인필요(디트릭스 API로 바로 불러오는지)”라는 메모가 있습니다.</li>
+            <li>따라서 검색에서 ‘영화’ 결과가 “콘텐츠(영화 정보)”인지, “상영/예매 영역”까지 포함하는지, 실제 연동 범위를 확정해야 합니다.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="mypage" data-filterable>
+        <h2>15. 마이페이지</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>마이페이지는 신청/결제/환불/연동 관리의 허브입니다. 교육/시설대관/영화인 멤버십 신청내역과 영화 예매내역(디트릭스)이 모입니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">신청내역의 상태 기반 버튼 노출(결제/환불요청/수료증/설문 등)을 반영합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">취소/환불 내역 탭(키워드 검색+상태 필터)을 제공하고 관리자 처리 단계를 반영합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">소셜 계정(카카오/네이버) 연동 상태 표시 + 연동/해제 플로우를 제공합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">첨부파일 업로드/수정 가능 조건 등 예외 케이스를 문서 기반 테스트 케이스로 정리합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>역할</summary>
+          <ul>
+            <li>사용자 개인 정보/연동 관리 + 신청/결제/환불의 “업무 허브”</li>
+            <li>영화 예매 내역(디트릭스 연동), 교육/시설대관 신청내역, 영화인 멤버십 신청/상태</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>신청내역(교육 예시)</summary>
+          <ul>
+            <li>상태별로 결제하기/환불요청/수료증/설문 등의 버튼 노출이 달라집니다.</li>
+            <li>신청/신청반려 상태에서만 신청정보 수정 가능(수정 시 상태값 ‘신청’으로 변경).</li>
+            <li>첨부파일 업로드(단일/30MB/형식 제한) 포함.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>취소/환불 내역</summary>
+          <ul>
+            <li>교육/시설대관 탭 제공, 키워드 검색 및 상태 필터 제공.</li>
+            <li>환불요청→환불완료는 사용자 요청 + 관리자 처리 단계가 존재합니다.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>소셜 계정 연동</summary>
+          <ul>
+            <li>카카오/네이버 연동 여부 표시</li>
+            <li>연동/해제 시 확인창, 해제 처리 후 연동 상태 갱신</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="todo" data-filterable>
+        <h2>16. 확인 필요/리스크</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>문서에 ‘확인 필요’로 표기된 항목과 인수인계 관점에서 리스크가 큰 포인트를 한 곳에 모았습니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge must">필수</span><span class="text">디트릭스/검색/시설대관 예약폼/예고편 등 ‘확인 필요’ 항목을 담당자(개발·운영)와 확정 후 반영합니다.</span></li>
+              <li><span class="badge must">필수</span><span class="text">상태값/환불/파일 업로드/보안 정책을 실제 구현 동작과 1:1로 점검합니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">API 키/쿼터/테스트 환경 등 외부 연동 체크리스트를 프로젝트 위키에 상시 업데이트합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <div class="callout">
+          <strong>문서에서 직접 “확인 필요”로 표시되거나, 인수인계 관점에서 리스크가 큰 항목</strong>
+          <ul>
+            <li><span class="tag warn">시설대관</span> 예약폼 상세 기능 확인(시설별 최소 시간 단위/날짜 범위/상태 색상 규칙 등).</li>
+            <li><span class="tag warn">영화</span> 관리자 설정 “메인 예고편 영상” 불러오기 기능 확인 필요.</li>
+            <li><span class="tag warn">통합검색</span> 영화 영역이 디트릭스 API로 “바로” 조회되는지(검색 범위/데이터소스) 확인 필요.</li>
+            <li><span class="tag warn">약관/운영규정</span> 교육/시설대관/영화인멤버십 약관 내용은 별도 파일(운영 규정 반영 시트) 참조로 되어 있어, 최종 텍스트 확정/동기화 필요.</li>
+            <li><span class="tag warn">알림톡</span> 발송 시점/템플릿/대상(어린이 교육: 신청자+자녀)을 운영/개발이 합의해야 함.</li>
+          </ul>
+        </div>
+
+        <details>
+          <summary>추천 체크리스트(바로 실행용)</summary>
+          <ol>
+            <li>디트릭스: API 범위(영화 정보/상영시간/좌석/할인/결제/취소), 장애 시 fallback, 테스트 환경 유무 확인</li>
+            <li>KOBIS: API 키/쿼터/검색 UI(영화인명/필모), 데이터 정합성 확인</li>
+            <li>신청/결제 상태값: 교육/시설대관/영화인 멤버십 각각의 상태전이 표 확정</li>
+            <li>환불: “환불요청” 주체(사용자) + “환불완료” 주체(관리자) 및 회계 처리 흐름 확인</li>
+            <li>파일 업로드: 서버 검증(확장자/MIME/용량), 저장 위치, 보관/삭제 정책 확정</li>
+            <li>보안: 로그인 5회 실패 정책(잠금? 캡차? 확인창?)의 실제 동작 정의</li>
+          </ol>
+        </details>
+      </section>
+
+      <section id="appendix" data-filterable>
+        <h2>17. 부록</h2>
+
+        <div class="grid-2">
+          <div class="callout">
+            <strong>요약</strong>
+            <p>용어 정리와 문서-코드 연결 팁(화면ID/상태값/데이터소스)을 제공합니다.</p>
+          </div>
+          <div class="callout">
+            <strong>요건(문서 기반)</strong>
+            <ul class="req">
+              <li><span class="badge should">권장</span><span class="text">화면/라우팅/컴포넌트에 Screen ID 메타데이터를 남겨 운영·QA 커뮤니케이션 비용을 줄입니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">상태값 Enum을 문서의 버튼 조건/문구와 1:1로 매핑해 변경 영향도를 낮춥니다.</span></li>
+              <li><span class="badge should">권장</span><span class="text">통합검색/캘린더 등 데이터 소스가 섞이는 영역은 장애·지연·권한 처리 정책을 선제적으로 정의합니다.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="detail-title">상세</h3>
+
+
+        <details open>
+          <summary>용어(간단)</summary>
+          <ul>
+            <li><strong>디트릭스</strong>: 영화 예매 솔루션/상영 정보 제공 외부 시스템</li>
+            <li><strong>KOBIS</strong>: 영화진흥위원회 영화정보 시스템(Open API), 영화인/영화사 정보 등</li>
+            <li><strong>상태값</strong>: 신청/승인/입금확인/완료 등의 처리 단계(운영·관리자 개입 포함)</li>
+            <li><strong>UI-XX</strong>: 화면설계서에서 사용하는 화면ID 프리픽스</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>문서-코드 연결 팁(개발/운영)</summary>
+          <ul>
+            <li>프론트 라우팅(URL) 또는 화면 컴포넌트에 <code>data-screen-id="UI-MV-01-002"</code> 같은 속성을 남겨두면, 운영/QA 때 커뮤니케이션 비용이 크게 줄어듭니다.</li>
+            <li>상태값은 “문서에 나온 문구/버튼 노출 조건”과 1:1 매핑되는 형태로 Enum을 설계하세요.</li>
+            <li>통합검색/캘린더는 “데이터 소스가 섞이는 지점”이므로, 장애/지연/권한 이슈 처리 정책을 미리 정의하는 게 안전합니다.</li>
+          </ul>
+        </details>
+
+        <p class="muted">끝. (이 페이지는 인수인계용 요약이며, 세부 UI 문구/레이아웃/예외 케이스는 원본 PDF를 최종 근거로 삼으세요.)</p>
+      </section>
+
+      <div class="floating">
+        <button class="btn" type="button" id="topBtn">↑ Top</button>
+        <button class="btn" type="button" id="copyLinkBtn">링크 복사</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Utilities
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+
+    // --- Search
+    const q = $("#q");
+    const clearBtn = $("#clearBtn");
+    const filterables = $$("[data-filterable]");
+
+    function normalize(s) {
+      return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function applyFilter() {
+      const term = normalize(q.value);
+      if (!term) {
+        filterables.forEach(sec => sec.style.display = "");
+        return;
+      }
+      filterables.forEach(sec => {
+        const text = normalize(sec.textContent);
+        sec.style.display = text.includes(term) ? "" : "none";
+      });
+    }
+
+    q.addEventListener("input", applyFilter);
+    clearBtn.addEventListener("click", () => {
+      q.value = "";
+      applyFilter();
+      q.focus();
+    });
+
+    // Ctrl+K focus
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        q.focus();
+      }
+    });
+
+    // --- Expand/Collapse all details
+    const expandAllBtn = $("#expandAllBtn");
+    const collapseAllBtn = $("#collapseAllBtn");
+
+    expandAllBtn.addEventListener("click", () => {
+      $$("details").forEach(d => d.open = true);
+    });
+    collapseAllBtn.addEventListener("click", () => {
+      $$("details").forEach(d => d.open = false);
+      // keep some top-level key blocks open for readability
+      $$("#overview details, #ia details").forEach(d => d.open = true);
+    });
+
+    // --- Active nav highlight (basic)
+    const navLinks = $$("#sidebar .nav a");
+    const sectionEls = filterables;
+
+
+    // --- Mobile menu toggle (mobile-first)
+    const sidebar = $("#sidebar");
+    const menuBtn = $("#menuBtn");
+    const isMobile = () => window.matchMedia("(max-width: 960px)").matches;
+
+    if (menuBtn && sidebar) {
+      const setMenu = (open) => {
+        sidebar.classList.toggle("open", open);
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        menuBtn.textContent = open ? "메뉴 닫기" : "메뉴";
+      };
+
+      // default: closed on load
+      setMenu(false);
+
+      menuBtn.addEventListener("click", () => {
+        setMenu(!sidebar.classList.contains("open"));
+      });
+
+      // close after navigating (mobile)
+      navLinks.forEach(a => a.addEventListener("click", () => {
+        if (isMobile()) setMenu(false);
+      }));
+
+      // if we leave mobile breakpoint, ensure menu is closed
+      window.addEventListener("resize", () => {
+        if (!isMobile()) setMenu(false);
+      });
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
+        }
+      });
+    }, { rootMargin: "-50% 0px -45% 0px", threshold: 0.01 });
+
+    sectionEls.forEach(sec => obs.observe(sec));
+
+    // --- Floating actions
+    const topBtn = $("#topBtn");
+    topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    const copyLinkBtn = $("#copyLinkBtn");
+    copyLinkBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        copyLinkBtn.textContent = "복사됨!";
+        setTimeout(() => copyLinkBtn.textContent = "링크 복사", 900);
+      } catch (e) {
+        alert("클립보드 복사가 차단되었습니다. 주소창 URL을 직접 복사해 주세요.");
+      }
+    });
+  </script>
+</body>
+</html>
