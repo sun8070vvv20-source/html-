@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="light dark" name="color-scheme"/>
+<meta content="light" name="color-scheme"/>
 <meta content="noindex, nofollow" name="robots"/>
 <meta content="서울영화센터 사용자 기획서(PDF) + 관리자(CMS) 기획서(PPTX) 기반 인수인계용 요약 정리. 원본 문서 기준으로 기능/요건/운영포인트를 구조화." name="description"/>
 <title>서울영화센터 사용자·관리자 기획서 인수인계 요약</title>
@@ -12,539 +12,550 @@
        - CSS/JS are embedded (no external assets)
        - Avoids frameworks/build steps
   -->
-<style>
-    :root{
-      --bg:#ffffff;
-      --fg:#0f172a;
-      --muted:#475569;
-      --border:rgba(15,23,42,.14);
-      --surface:rgba(15,23,42,.03);
-      --surface2:rgba(15,23,42,.06);
-      --accent:#2563eb;
-      --accent-weak:rgba(37,99,235,.12);
-      --danger:#dc2626;
-      --warn:#b45309;
-      --ok:#16a34a;
-      --shadow:0 10px 30px rgba(2,6,23,.10);
-      --radius:16px;
+<style>:root{
+  --page:#f6f7f8;
+  --card:#ffffff;
+  --card2:#f1f2f4;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:rgba(15,23,42,.10);
 
-      --sans:'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;
+  --accent:#2563eb;
+  --accent-weak:rgba(37,99,235,.14);
+  --danger:#dc2626;
+  --warn:#b45309;
+  --ok:#16a34a;
 
-      /* Mobile-first readable type scale */
-      --fs-base:clamp(16px,0.45vw + 15px,18px);
-      --fs-sm:clamp(12.5px,0.25vw + 12px,14px);
-      --fs-h1:clamp(22px,1.6vw + 18px,32px);
-      --fs-h2:clamp(18px,1.15vw + 16px,24px);
-      --fs-h3:clamp(16px,0.85vw + 15px,20px);
-    }
+  --shadow:0 1px 1px rgba(16,24,40,.04), 0 12px 32px rgba(16,24,40,.08);
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0b0f14;
-        --fg:#e6edf3;
-        --muted:#9aa4af;
-        --border:rgba(255,255,255,.14);
-        --surface:rgba(255,255,255,.06);
-        --surface2:rgba(255,255,255,.09);
-        --accent:#60a5fa;
-        --accent-weak:rgba(96,165,250,.16);
-        --danger:#fb7185;
-        --warn:#fdba74;
-        --ok:#4ade80;
-        --shadow:0 10px 30px rgba(0,0,0,.45);
-      }
-    }
+  --radius:18px;
+  --radius-sm:14px;
 
-    html,body{height:100%;}
-    html{scroll-behavior:smooth;}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font-family:var(--sans);
-      font-size:var(--fs-base);
-      line-height:1.7;
-      text-rendering:optimizeLegibility;
-      -webkit-font-smoothing:antialiased;
-    }
+  --sans:'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;
 
-    /* Safer wrapping: prevents overflow on mobile */
-    *{box-sizing:border-box;}
-    p,li,td,th{overflow-wrap:anywhere; word-break:break-word;}
-    .keep-all{word-break:keep-all; overflow-wrap:break-word;}
+  /* Mobile-first readable type scale */
+  --fs-base:clamp(15.5px,0.35vw + 14.6px,17.5px);
+  --fs-sm:clamp(12.5px,0.2vw + 12px,14px);
+  --fs-h1:clamp(20px,1.4vw + 18px,28px);
+  --fs-h2:clamp(18px,1.0vw + 16px,22px);
+  --fs-h3:clamp(16px,0.7vw + 15px,20px);
 
-    a{color:var(--accent); text-decoration:none;}
-    a:hover{text-decoration:underline;}
+  --content-pad:18px;
+}
 
-    code{
-      font-family:var(--mono);
-      font-size:.95em;
-      background:var(--surface2);
-      border:1px solid var(--border);
-      padding:.1em .35em;
-      border-radius:10px;
-    }
-    pre{
-      font-family:var(--mono);
-      background:var(--bg);
-      border:1px solid var(--border);
-      padding:12px;
-      border-radius:14px;
-      overflow:auto;
-      box-shadow:0 1px 0 rgba(0,0,0,.04);
-    }
+html,body{height:100%;}
+html{scroll-behavior:smooth;}
+*{box-sizing:border-box;}
 
-    .app{
-      display:grid;
-      grid-template-columns:330px 1fr;
-      min-height:100vh;
-    }
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:var(--fs-base);
+  line-height:1.7;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden; /* prevent accidental horizontal scroll */
+}
 
-    .sidebar{
-      border-right:1px solid var(--border);
-      padding:18px 16px;
-      position:sticky;
-      top:0;
-      height:100vh;
-      overflow:auto;
-      background:var(--bg);
-    }
+/* Safer wrapping: prevents overflow on mobile */
+p,li,td,th,summary{overflow-wrap:anywhere; word-break:break-word;}
+.keep-all{word-break:keep-all; overflow-wrap:break-word;}
 
-    .brand h1{
-      font-size:18px;
-      line-height:1.25;
-      margin:0 0 10px;
-      letter-spacing:-.02em;
-    }
-    .meta{
-      font-size:var(--fs-sm);
-      color:var(--muted);
-      display:grid;
-      gap:4px;
-    }
-    .muted{color:var(--muted);}
+a{color:var(--accent); text-decoration:none;}
+a:hover{text-decoration:underline;}
 
-    .search{
-      display:flex;
-      gap:8px;
-      margin:14px 0 12px;
-    }
-    .search input{
-      flex:1;
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--fg);
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:var(--fs-sm);
-      outline:none;
-    }
-    .search input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-weak);}
+code{
+  font-family:var(--mono);
+  font-size:.95em;
+  background:var(--card2);
+  border:1px solid var(--border);
+  padding:.1em .35em;
+  border-radius:999px;
+}
 
-    .btn{
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--fg);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-size:var(--fs-sm);
-      line-height:1;
-      white-space:nowrap;
-    }
-    .btn:hover{border-color:rgba(0,0,0,.18);}
-    @media (prefers-color-scheme: dark){
-      .btn:hover{border-color:rgba(255,255,255,.22);}
-    }
-    .btn.primary{
-      border-color:var(--accent);
-      background:var(--accent);
-      color:#fff;
-    }
-    .btn.primary:hover{filter:brightness(.98);}
+pre{
+  font-family:var(--mono);
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:var(--radius-sm);
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+}
 
-    .nav{
-      margin-top:10px;
-      display:grid;
-      gap:2px;
-    }
-    .nav-section-title{
-      margin-top:14px;
-      font-size:var(--fs-sm);
-      color:var(--muted);
-      font-weight:700;
-      letter-spacing:.02em;
-      text-transform:uppercase;
-    }
-    .nav a{
-      display:block;
-      padding:8px 10px;
-      border-radius:12px;
-      color:var(--fg);
-      border:1px solid transparent;
-      font-size:var(--fs-sm);
-    }
-    .nav a:hover{
-      background:var(--surface);
-      border-color:var(--border);
-    }
+/* Layout */
+.app{
+  display:grid;
+  grid-template-columns:320px minmax(0,1fr);
+  min-height:100vh;
+}
 
-    .nav a.active{
-      background:var(--accent-weak);
-      border-color:var(--accent);
-    }
+.sidebar{
+  border-right:1px solid var(--border);
+  padding:16px 14px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:auto;
+  background:var(--card);
+}
 
-    .toc-note{
-      margin-top:12px;
-      font-size:var(--fs-sm);
-      color:var(--muted);
-    }
+.brand h1{
+  font-size:18px;
+  line-height:1.25;
+  margin:0 0 10px;
+  letter-spacing:-.02em;
+}
 
-    .content{
-      padding:18px 18px 120px;
-    }
+.meta{
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  display:grid;
+  gap:4px;
+}
+.muted{color:var(--muted);}
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:var(--surface);
-      position:sticky;
-      top:12px;
-      z-index:20;
-      backdrop-filter:saturate(1.2);
-    }
-    .topbar .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+.search{
+  display:flex;
+  gap:8px;
+  margin:12px 0 10px;
+}
+.search input{
+  flex:1;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:999px;
+  font-size:var(--fs-sm);
+  outline:none;
+}
+.search input:focus{
+  background:var(--card);
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-weak);
+}
 
-    .scope-toggle{
-      display:flex;
-      gap:6px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .chip{
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--fg);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:var(--fs-sm);
-      cursor:pointer;
-      line-height:1;
-    }
-    .chip[aria-pressed="true"]{
-      border-color:var(--accent);
-      box-shadow:0 0 0 4px var(--accent-weak);
-      background:var(--bg);
-    }
+.btn{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:9px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:var(--fs-sm);
+  line-height:1;
+  white-space:nowrap;
+}
+.btn:hover{background:var(--card2);}
+.btn.primary{
+  border-color:var(--accent);
+  background:var(--accent);
+  color:#fff;
+}
+.btn.primary:hover{filter:brightness(.97);}
 
-    .kpi{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin:14px 0 18px;
-    }
-    .card{
-      border:1px solid var(--border);
-      background:var(--surface);
-      border-radius:var(--radius);
-      padding:14px;
-      box-shadow:0 1px 0 rgba(0,0,0,.04);
-    }
-    .label{
-      font-size:var(--fs-sm);
-      color:var(--muted);
-      font-weight:700;
-      margin-bottom:6px;
-    }
-    .value{
-      font-weight:600;
-      letter-spacing:-.01em;
-    }
+.nav{
+  margin-top:8px;
+  display:grid;
+  gap:2px;
+}
+.nav-section-title{
+  margin-top:12px;
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+.nav a{
+  display:block;
+  padding:8px 10px;
+  border-radius:12px;
+  color:var(--text);
+  border:1px solid transparent;
+  font-size:var(--fs-sm);
+}
+.nav a:hover{
+  background:var(--card2);
+  border-color:var(--border);
+}
+.nav a.active{
+  background:var(--accent-weak);
+  border-color:rgba(37,99,235,.35);
+}
 
-    section{
-      border:1px solid var(--border);
-      background:var(--surface);
-      border-radius:var(--radius);
-      padding:18px;
-      margin:18px 0;
-      box-shadow:0 1px 0 rgba(0,0,0,.04);
-    }
-    h2{
-      font-size:var(--fs-h2);
-      margin:0 0 10px;
-      letter-spacing:-.02em;
-    }
-    h3{
-      font-size:var(--fs-h3);
-      margin:14px 0 8px;
-      letter-spacing:-.01em;
-    }
+.toc-note{
+  margin-top:12px;
+  font-size:var(--fs-sm);
+  color:var(--muted);
+}
 
-    .section-meta{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin:12px 0 14px;
-    }
-    .meta-card{
-      border:1px solid var(--border);
-      background:var(--bg);
-      border-radius:14px;
-      padding:12px 12px;
-    }
-    .meta-title{
-      font-size:var(--fs-sm);
-      color:var(--muted);
-      font-weight:800;
-      letter-spacing:.02em;
-      margin-bottom:6px;
-      text-transform:uppercase;
-    }
-    .meta-card ul{margin:0; padding-left:18px;}
-    .meta-card p{margin:0;}
-    .meta-card li{margin:6px 0;}
+.content{min-width:0;}
 
-    details{
-      border:1px solid var(--border);
-      background:var(--bg);
-      border-radius:14px;
-      padding:10px 12px;
-      margin:10px 0;
-    }
-    details[open]{background:var(--surface2);}
-    summary{
-      cursor:pointer;
-      font-weight:800;
-      list-style:none;
-      outline:none;
-    }
-    summary::-webkit-details-marker{display:none;}
-    summary::after{
-      content:"▾";
-      float:right;
-      color:var(--muted);
-      font-weight:900;
-    }
-    details[open] summary::after{content:"▴";}
-    details > *:not(summary){margin-top:10px;}
+/* Top header: separated + sticky (Threads-like simple header) */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:80;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 6px 18px rgba(16,24,40,.06);
+  padding:12px var(--content-pad);
+}
+.topbar > div{min-width:0;}
+.topbar .actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.scope-toggle{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  flex-wrap:wrap;
+}
 
-    .grid-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin:12px 0;
-    }
+.chip{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:var(--fs-sm);
+  cursor:pointer;
+  line-height:1;
+}
+.chip[aria-pressed="true"]{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-weak);
+}
 
-    .callout{
-      border:1px solid var(--border);
-      background:var(--bg);
-      border-radius:14px;
-      padding:12px 12px;
-    }
-    .callout strong{display:block; margin-bottom:8px;}
-    .callout ol,.callout ul{margin:0; padding-left:18px;}
+.main{
+  padding:16px var(--content-pad) 120px;
+}
 
-    .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      font-size:var(--fs-sm);
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--fg);
-      font-weight:650;
-      white-space:nowrap;
-    }
-    .tag.accent{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-weak);}
-    .tag.warn{border-color:var(--warn); }
-    .tag.ok{border-color:var(--ok); }
-    .tag.danger{border-color:var(--danger); }
+/* KPI cards */
+.kpi{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:0 0 16px;
+}
 
-    table{width:100%; border-collapse:collapse; margin:10px 0; font-size:var(--fs-sm);}
-    th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; background:var(--bg);}
-    th{background:var(--surface2); font-weight:800;}
-    .table-wrap{overflow:auto; border-radius:14px;}
+.card{
+  border:1px solid var(--border);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+}
+.label{
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  font-weight:800;
+  margin-bottom:6px;
+}
+.value{
+  font-weight:650;
+  letter-spacing:-.01em;
+}
 
-    .floating{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      display:flex;
-      gap:8px;
-      z-index:30;
-    }
+/* Sections */
+section{
+  border:1px solid var(--border);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+}
+h2{
+  font-size:var(--fs-h2);
+  margin:0 0 10px;
+  letter-spacing:-.02em;
+}
+h3{
+  font-size:var(--fs-h3);
+  margin:14px 0 8px;
+  letter-spacing:-.01em;
+}
 
-    @media (max-width:960px){
-      .app{grid-template-columns:1fr;}
-      .sidebar{
-        position:relative;
-        height:auto;
-        border-right:none;
-        border-bottom:1px solid var(--border);
-      }
-      .kpi{grid-template-columns:1fr;}
-      .grid-2{grid-template-columns:1fr;}
-      .section-meta{grid-template-columns:1fr;}
-      .topbar{
-        position:sticky;
-        top:0;
-        border-radius:0;
-        border-left:none;
-        border-right:none;
-      }
-      .floating{right:14px; bottom:14px;}
-    }
+.section-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:10px 0 12px;
+}
+.meta-card{
+  border:1px solid var(--border);
+  background:var(--card2);
+  border-radius:var(--radius-sm);
+  padding:12px;
+}
+.meta-title{
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  font-weight:900;
+  letter-spacing:-.01em;
+  margin-bottom:6px;
+}
+.meta-card ul{margin:0; padding-left:18px;}
+.meta-card p{margin:0;}
+.meta-card li{margin:6px 0;}
 
-    @media print{
-      .sidebar, .floating, .topbar .actions, .topbar .scope-toggle{display:none !important;}
-      .app{grid-template-columns:1fr;}
-      body{background:#fff; color:#000;}
-      section{break-inside:avoid; box-shadow:none;}
-      a{color:#000; text-decoration:underline;}
-      .tag{border:1px solid #000; background:#fff; box-shadow:none;}
-    }
+details{
+  border:1px solid var(--border);
+  background:var(--card2);
+  border-radius:var(--radius-sm);
+  padding:10px 12px;
+  margin:10px 0;
+}
+summary{
+  cursor:pointer;
+  font-weight:900;
+  list-style:none;
+  outline:none;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{
+  content:"▾";
+  float:right;
+  color:var(--muted);
+  font-weight:900;
+}
+details[open] summary::after{content:"▴";}
+details > *:not(summary){margin-top:10px;}
 
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:12px 0;
+}
 
-    /* =========================
-       Header refinements (no gradient)
-       ========================= */
-    .topbar{
-      margin: -18px -18px 16px;
-      padding: 12px 18px;
-      border: 0;
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
-      background: var(--bg);
-      box-shadow: 0 8px 22px rgba(2, 6, 23, .06);
-      position: sticky;
-      top: 0;
-      z-index: 60;
-    }
-    @media (max-width: 960px){
-      .topbar{
-        margin: 0 0 14px;
-        padding: 10px 12px;
-        box-shadow: 0 10px 26px rgba(2, 6, 23, .10);
-      }
-    }
+.callout{
+  border:1px solid var(--border);
+  background:var(--card2);
+  border-radius:var(--radius-sm);
+  padding:12px;
+}
+.callout strong{display:block; margin-bottom:8px;}
+.callout ol,.callout ul{margin:0; padding-left:18px;}
 
-    /* =========================
-       Footnotes + tooltip
-       ========================= */
-    .fn-sup{ vertical-align: super; }
-    .fn-ref{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.7em;
-      height: 1.7em;
-      padding: 0;
-      margin-left: 4px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--accent);
-      font-weight: 800;
-      font-size: calc(var(--fs-sm) * 0.95);
-      line-height: 1;
-      cursor: pointer;
-    }
-    .fn-ref:hover{ box-shadow: 0 0 0 3px var(--accent-weak); }
-    .fn-ref:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--accent-weak); }
+.tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:var(--fs-sm);
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--text);
+  font-weight:700;
+  white-space:nowrap;
+}
+.tag.accent{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-weak);}
+.tag.warn{border-color:var(--warn);}
+.tag.ok{border-color:var(--ok);}
+.tag.danger{border-color:var(--danger);}
 
-    .footnotes{ margin-top: 14px; }
-    .footnotes ol{ padding-left: 18px; }
-    .footnotes li{
-      border: 1px solid var(--border);
-      background: var(--bg);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin: 10px 0;
-    }
-    .footnotes .fn-meta{
-      font-size: var(--fs-sm);
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .footnotes .fn-text{ margin: 0; }
-    .footnotes .fn-back{
-      display: inline-block;
-      margin-top: 8px;
-      font-size: var(--fs-sm);
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .footnotes .fn-back:hover{ text-decoration: underline; }
+/* Tables: no horizontal scrolling; stack on mobile */
+.table-wrap{margin:10px 0;}
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:var(--fs-sm);
+  table-layout:fixed;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+}
+th,td{
+  padding:10px 10px;
+  text-align:left;
+  vertical-align:top;
+  border-bottom:1px solid var(--border);
+}
+th{
+  background:var(--card2);
+  font-weight:900;
+}
+th:not(:last-child), td:not(:last-child){border-right:1px solid var(--border);}
+tbody tr:last-child td{border-bottom:0;}
 
-    .fn-tooltip{
-      position: fixed;
-      z-index: 9999;
-      max-width: min(420px, calc(100vw - 24px));
-      background: var(--bg);
-      color: var(--fg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      padding: 10px 12px;
-      display: none;
-    }
-    .fn-tooltip[data-open="true"]{ display: block; }
-    .fn-tooltip .fn-meta{
-      font-size: var(--fs-sm);
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .fn-tooltip .fn-body{
-      font-size: var(--fs-md);
-      line-height: 1.5;
-      white-space: normal;
-    }
-    .fn-tooltip .fn-actions{
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .fn-tooltip .fn-actions .btn{
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--fg);
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: var(--fs-sm);
-    }
-    .fn-tooltip .fn-actions .btn:hover{ box-shadow: 0 0 0 3px var(--accent-weak); }
-    .fn-tooltip .fn-actions .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--accent-weak); }
+/* Floating actions */
+.floating{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  display:flex;
+  gap:8px;
+  z-index:90;
+}
+.floating .btn{
+  box-shadow:0 12px 24px rgba(16,24,40,.12);
+}
 
-    @media print{
-      .fn-tooltip{ display: none !important; }
-      .fn-ref{ border: 0; background: transparent; width: auto; height: auto; margin-left: 2px; }
-    }
-</style>
+/* Footnotes + tooltip */
+.fn-sup{vertical-align:super;}
+.fn-ref{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.6em;
+  height:1.6em;
+  padding:0;
+  margin-left:4px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--accent);
+  font-weight:900;
+  font-size:calc(var(--fs-sm) * 0.95);
+  line-height:1;
+  cursor:pointer;
+}
+.fn-ref:hover{box-shadow:0 0 0 4px var(--accent-weak);}
+.fn-ref:focus-visible{outline:none; box-shadow:0 0 0 4px var(--accent-weak);}
+
+.footnotes{margin-top:14px;}
+.footnotes ol{padding-left:18px;}
+.footnotes li{
+  border:1px solid var(--border);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:10px 12px;
+  margin:10px 0;
+}
+.footnotes .fn-meta{
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.footnotes .fn-text{margin:0;}
+.footnotes .fn-back{
+  display:inline-block;
+  margin-top:8px;
+  font-size:var(--fs-sm);
+  color:var(--accent);
+  text-decoration:none;
+}
+.footnotes .fn-back:hover{text-decoration:underline;}
+
+.fn-tooltip{
+  position:fixed;
+  z-index:9999;
+  max-width:min(420px, calc(100vw - 24px));
+  background:var(--card);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:10px 12px;
+  display:none;
+}
+.fn-tooltip[data-open="true"]{display:block;}
+.fn-tooltip .fn-meta{
+  font-size:var(--fs-sm);
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.fn-tooltip .fn-body{
+  font-size:var(--fs-base);
+  line-height:1.55;
+  white-space:normal;
+}
+.fn-tooltip .fn-actions{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.fn-tooltip .fn-actions .btn{
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--text);
+  cursor:pointer;
+  text-decoration:none;
+  font-weight:800;
+  font-size:var(--fs-sm);
+}
+.fn-tooltip .fn-actions .btn:hover{box-shadow:0 0 0 4px var(--accent-weak);}
+.fn-tooltip .fn-actions .btn:focus-visible{outline:none; box-shadow:0 0 0 4px var(--accent-weak);}
+
+/* Responsive */
+@media (max-width:960px){
+  :root{--content-pad:12px;}
+  .app{grid-template-columns:1fr;}
+  .sidebar{
+    position:relative;
+    height:auto;
+    border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+  .kpi{grid-template-columns:1fr; gap:10px;}
+  .grid-2{grid-template-columns:1fr;}
+  .section-meta{grid-template-columns:1fr;}
+  .main{padding:12px var(--content-pad) 120px;}
+  .floating{right:14px; bottom:14px;}
+}
+
+@media (max-width:680px){
+  table{border:0; border-radius:0;}
+  thead{display:none;}
+  tbody, tr, td{display:block; width:100%;}
+  tr{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:10px 12px;
+    margin:10px 0;
+  }
+  td{
+    border:0;
+    padding:6px 0;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  td::before{
+    content:attr(data-label);
+    flex:0 0 38%;
+    max-width:38%;
+    font-weight:900;
+    color:var(--muted);
+  }
+  td > *{flex:1; min-width:0;}
+}
+
+@media print{
+  .sidebar, .floating, .topbar .actions, .topbar .scope-toggle{display:none !important;}
+  .app{grid-template-columns:1fr;}
+  body{background:#fff; color:#000;}
+  section{break-inside:avoid; box-shadow:none;}
+  a{color:#000; text-decoration:underline;}
+  .tag{border:1px solid #000; background:#fff; box-shadow:none;}
+  .fn-tooltip{display:none !important;}
+  .fn-ref{border:0; background:transparent; width:auto; height:auto; margin-left:2px;}
+}</style>
 <link crossorigin="anonymous" href="https://cdn.jsdelivr.net" rel="preconnect"/><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet"/></head>
 <body>
 <div class="app">
 <aside class="sidebar" id="sidebar">
 <div class="brand">
 <h1>서울영화센터 사용자·관리자 기획서<br/>인수인계용 요약</h1>
-<div class="meta"><div>사용자 원본: <span class="muted">영화센터 사용자 기획서_20260224갱신.pdf (ver1.5 · 문서표기 2025-10-23 · 파일명 갱신일 2026-02-24)</span></div><div>관리자 원본: <span class="muted">서울영화센터 홈페이지 구축 관리자_v0.9.pptx (v0.9 · 2025-09-09)</span></div><div>요약 페이지 업데이트: <span class="muted">2026-02-25</span></div></div>
+<div class="meta"><div>사용자 원본: <span class="muted">영화센터 사용자 기획서_20260224갱신.pdf (ver1.5 · 문서표기 2025-10-23 · 파일명 갱신일 2026-02-24)</span></div><div>관리자 원본: <span class="muted">서울영화센터 홈페이지 구축 관리자_v0.9.pptx (v0.9 · 2025-09-09)</span></div><div>요약 페이지 업데이트: <span class="muted">2026-02-26</span></div></div>
 </div>
 <div class="search">
 <input autocomplete="off" id="q" placeholder="검색 (Ctrl+K) — 예: 디트릭스, UI-MV, 시설대관, 환불, 메인배너, 팝업, API 연계" type="search"/>
@@ -561,8 +572,7 @@
 <button class="btn" id="collapseAllBtn" type="button">모두 접기</button>
 <button class="btn" onclick="window.print()" type="button">인쇄 / PDF 저장</button>
 </div>
-</div>
-<div class="kpi">
+</div><div class="main"><div class="kpi">
 <div class="card">
 <div class="label">문서 범위(대분류)</div>
 <div class="value">사용자(Front) + 관리자(CMS) · 공통관리(배너/팝업/콘텐츠) · 영화/전시/교육/시설대관 · 회원/멤버십 · 게시글/고객센터 · 검색/캘린더 · 통계/시스템</div>
@@ -575,16 +585,11 @@
 <div class="label">인수인계 관점</div>
 <div class="value">각 항목을 “요약 → 요건(필수 규칙) → 상세” 순으로 정리하고, 사용자 화면과 관리자 메뉴의 연결 지점을 함께 명시</div>
 </div>
-</div>
-<section data-filterable="" data-scope="common" id="overview">
+</div><section data-filterable="" data-scope="common" id="overview">
 <h2>1. 문서 개요 <sup class="fn-sup"><button aria-controls="fn-1" aria-expanded="false" class="fn-ref" data-fn="fn-1" id="fnref-1" title="각주 1" type="button">1</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>
 이 페이지는 <strong>사용자(Front) PDF 화면설계서</strong>와 <strong>관리자(CMS) PPTX 화면설계서</strong>를 기반으로, 인수인계 목적에 맞게 <strong>핵심 기능/규칙/연동/상태값</strong> 중심으로 재구성한 요약본입니다.
 “처음 보는 사람도” 프로젝트를 따라갈 수 있도록 <strong>IA → 연동 → 공통룰 → (사용자) 모듈별 → (관리자) 메뉴별</strong> 순서로 정리했습니다.
 </p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>최종 근거는 항상 원본 문서(화면설계서)로 확인(문구/레이아웃/예외 포함).</li><li>좌측 검색(Ctrl+K)으로 화면ID/상태값/키워드 기반 탐색.</li><li>각 섹션은 “요약 → 요건(필수 규칙) → 상세” 순서로 읽기.</li></ul></div></div>
-<p>
-          이 페이지는 <strong>원본 PDF 화면설계서</strong>를 기반으로, 인수인계 목적에 맞게 <strong>핵심 기능/규칙/연동/상태값</strong> 중심으로 재구성한 요약본입니다.
-          “처음 보는 사람도” 프로젝트를 따라갈 수 있도록 <strong>IA → 연동 → 공통룰 → 모듈별 상세</strong> 순서로 정리했습니다.
-        </p>
 <div class="grid-2">
 <div class="callout">
 <strong>원본 문서 정보</strong>
@@ -612,8 +617,7 @@
 <li><strong>관리자(CMS)</strong>: v0.9(2025-09-09) 기준 화면/기능 포함</li></ul>
 <p class="muted">※ 원본 PDF의 개정 이력 표는 일부 버전 표기가 섞여 있으나(감리대응 포함), 인수인계 목적상 “기능 추가/변경 축”만 요약했습니다.</p>
 </details>
-</section>
-<section data-filterable="" data-scope="common" id="ia">
+</section><section data-filterable="" data-scope="common" id="ia">
 <h2>2. IA / 화면 체계 <sup class="fn-sup"><button aria-controls="fn-2" aria-expanded="false" class="fn-ref" data-fn="fn-2" id="fnref-2" title="각주 2" type="button">2</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>사용자(Front) IA와 화면 코드 체계(UI-*)를 정리하고, 관리자(CMS) 메뉴 구조와의 연결 지점을 함께 표시합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>Front IA는 Depth1/Depth2 기준으로 페이지/기능 단위를 식별.</li><li>CMS 메뉴는 '공통관리/프로그램/회원/게시글/통계/시스템' 축으로 관리 포인트를 식별.</li><li>동일 개체(전시/교육/시설/회원)는 Front 화면과 CMS 메뉴를 1:1로 매핑해 운영 혼선을 방지.</li></ul></div></div>
 <p class="muted">
           원본은 화면ID 체계를 사용합니다(예: <code>UI-MV-01-002</code>). 인수인계/협업 시 “화면ID”로 커뮤니케이션하면 가장 빠릅니다.
@@ -837,8 +841,7 @@
 </table>
 </div>
 </details>
-</section>
-<section data-filterable="" data-scope="common" id="integrations">
+</section><section data-filterable="" data-scope="common" id="integrations">
 <h2>3. 연동/외부 시스템 <sup class="fn-sup"><button aria-controls="fn-3" aria-expanded="false" class="fn-ref" data-fn="fn-3" id="fnref-3" title="각주 3" type="button">3</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>Front·CMS 모두에서 사용되는 외부 연동(예매/영화인 검색/알림/관리 API)을 한 곳에 모아, 개발·운영 시 의존성을 빠르게 파악합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>디트릭스: 영화 예매/좌석/결제/취소 등 핵심 트랜잭션 연동(오류·지연 대응 정책 필요).</li><li>KOBIS: 영화인 멤버십 신청 시 영화인 조회/선택(검색 UX/쿼리 제한 고려).</li><li>CMS: 'API 연계 관리'에서 Endpoint/Key/파라미터 등을 관리할 수 있는 구조(권한·보안 필수).</li></ul></div></div>
 <details open="">
 <summary>연동 요약</summary>
@@ -893,8 +896,7 @@
 </ul>
 <p class="muted">※ 정확한 관리자 기능 범위/데이터 소스는 원본 설계서 및 별도 “운영 규정/관리자 설계서”가 있으면 함께 확인하세요.</p>
 </div>
-</section>
-<section data-filterable="" data-scope="common" id="crosscutting">
+</section><section data-filterable="" data-scope="common" id="crosscutting">
 <h2>4. 공통 정책/룰 <sup class="fn-sup"><button aria-controls="fn-4" aria-expanded="false" class="fn-ref" data-fn="fn-4" id="fnref-4" title="각주 4" type="button">4</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>상태값, 업로드 정책, 보안/제한 등 전 모듈에 영향을 주는 공통 규칙을 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>상태값(신청/반려/승인/취소/환불 등)은 Front 표시와 CMS 처리 상태가 일치해야 함.</li><li>파일 업로드: 용량/개수/확장자 제한을 공통 컴포넌트로 강제(Front·CMS 정책 분리 주의).</li><li>로그인 보안/제한(잠김/해제, 인증 등)은 운영 정책(잠김 기준/해제 절차)을 함께 정의.</li></ul></div></div>
 <details open="">
 <summary>상태값(프로세스) 공통 축</summary>
@@ -941,8 +943,7 @@
 <li>소셜 로그인은 “홈페이지 가입 여부를 판단할 수 없음” 이슈로 별도 안내/연동 플로우를 둠.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="auth">
+</section><section data-filterable="" data-scope="user" id="auth">
 <h2>5. 회원/인증 <sup class="fn-sup"><button aria-controls="fn-5" aria-expanded="false" class="fn-ref" data-fn="fn-5" id="fnref-5" title="각주 5" type="button">5</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>회원가입(일반/어린이), 소셜로그인, 아이디/비밀번호 찾기 등 인증/계정 기반 기능을 다룹니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>일반/어린이 가입 분기 및 필수 정보(약관/본인확인 등) 흐름을 화면 기준으로 구현.</li><li>네이버/카카오 소셜 연동: 가입/로그인/연동해제(마이페이지)까지 일관된 정책 필요.</li><li>계정 잠김/비밀번호 초기화는 CMS의 '비밀번호 초기화/잠김해제' 기능과 연계.</li></ul></div></div>
 <details open="">
 <summary>회원가입(일반/어린이) 핵심 포인트</summary>
@@ -971,8 +972,7 @@
 <li>실제 구현 시 “어떤 인증수단이 최종 확정인지”는 운영/정책 문서(또는 개발 완료 버전)와 대조 필요합니다.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="movie">
+</section><section data-filterable="" data-scope="user" id="movie">
 <h2>6. 영화 예매/확인 <sup class="fn-sup"><button aria-controls="fn-6" aria-expanded="false" class="fn-ref" data-fn="fn-6" id="fnref-6" title="각주 6" type="button">6</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>영화 목록/상세/상영시간표/예매확인 등 '영화 관람' 핵심 여정을 정리합니다(디트릭스 연동 중심).</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>예매/취소/좌석/결제 등 상태는 디트릭스 응답과 동기화되어야 함.</li><li>추천/태그/노출 규칙은 운영자가 CMS에서 관리 가능한 범위를 명확히 해야 함.</li><li>장애/지연 시 사용자 안내(재시도/문의)와 운영 모니터링(오류 로그) 준비.</li></ul></div></div>
 <details open="">
 <summary>기능 범위</summary>
@@ -1010,8 +1010,7 @@
 <li>예매 취소 가능 시간/극장별 유의사항 등은 예매내역에서 표기합니다.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="exhibition">
+</section><section data-filterable="" data-scope="user" id="exhibition">
 <h2>7. 전시·행사 <sup class="fn-sup"><button aria-controls="fn-7" aria-expanded="false" class="fn-ref" data-fn="fn-7" id="fnref-7" title="각주 7" type="button">7</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>전시·행사 콘텐츠의 목록/상세/신청 및 운영 포인트를 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>전시/행사 기본정보(기간/시간/장소/문의/가격 등)는 CMS 등록 항목과 동일한 스키마로 유지.</li><li>신청/참여가 있는 경우, CMS에서 신청자 현황/처리 상태가 조회 가능해야 함.</li><li>휴관일/미노출 등 운영 변수는 캘린더·상세 노출과 충돌하지 않도록 정책 확정.</li></ul></div></div>
 <details open="">
 <summary>기능 범위</summary>
@@ -1028,8 +1027,7 @@
 <li>통합캘린더/통합검색에도 노출되므로, 노출 필드(제목/기간/장소/썸네일/태그) 일관성 중요.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="education">
+</section><section data-filterable="" data-scope="user" id="education">
 <h2>8. 교육 <sup class="fn-sup"><button aria-controls="fn-8" aria-expanded="false" class="fn-ref" data-fn="fn-8" id="fnref-8" title="각주 8" type="button">8</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>교육 프로그램의 신청/결제(해당 시)/취소·환불/첨부 등 사용자 흐름과 상태를 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>교육 유형/정원/대기/마감 등 상태 규칙을 Front와 CMS가 동일하게 사용.</li><li>취소·환불 규정(기한/수수료/불가 조건)은 사용자 안내 문구까지 포함해 확정.</li><li>CMS에서 신청자 현황, 설문, 수료증 발급 등 운영 기능과 데이터 구조를 맞춤.</li></ul></div></div>
 <details open="">
 <summary>핵심 흐름</summary>
@@ -1073,8 +1071,7 @@
 <li>교육 신청/수정 시 <strong>첨부파일 업로드</strong>가 포함됩니다(형식/용량 제한 존재).</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="facility">
+</section><section data-filterable="" data-scope="user" id="facility">
 <h2>9. 시설대관 <sup class="fn-sup"><button aria-controls="fn-9" aria-expanded="false" class="fn-ref" data-fn="fn-9" id="fnref-9" title="각주 9" type="button">9</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>시설대관(공유오피스/상영관 등) 신청·예약·운영(입금확인/이용완료 등)을 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>예약(날짜/시간/좌석/목적/요청사항) 입력값 검증 및 캘린더 UI의 오류 방지.</li><li>입금확인 등 운영 상태 변경은 CMS에서 처리하며, Front 조회 상태와 일치 필요.</li><li>대관신청서 등 첨부파일 정책(확장자/용량)과 보관/다운로드 권한을 확정.</li></ul></div></div>
 <details open="">
 <summary>기능 범위</summary>
@@ -1111,8 +1108,7 @@
 <li>형식: <code>hwp, pdf, doc, docx, xls, xlsx, ppt, pptx</code> / 30MB 이하 / 단일 업로드</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="membership">
+</section><section data-filterable="" data-scope="user" id="membership">
 <h2>10. 멤버십 <sup class="fn-sup"><button aria-controls="fn-10" aria-expanded="false" class="fn-ref" data-fn="fn-10" id="fnref-10" title="각주 10" type="button">10</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>일반 멤버십(등급 산정/혜택/쿠폰)의 운영 규칙을 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>등급 산정 기준(홈페이지 예매+관람완료, 현장예매 제외)과 산정 시점을 시스템화.</li><li>쿠폰 혜택은 발급/노출/사용 집계 정책을 명확히(특히 오프라인 사용 처리).</li><li>멤버십 통계(등급/신청/쿠폰 사용 수)는 CMS 통계 메뉴와 지표 정의가 필요.</li></ul></div></div>
 <details open="">
 <summary>일반 멤버십(등급/혜택)</summary>
@@ -1130,8 +1126,7 @@
 <li>정확한 혜택/쿠폰 종류/발급 정책은 “홈페이지 약관 운영 규정 반영” 파일의 해당 시트(문서에서 참조)로 최종 확인 필요.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="filmMembership">
+</section><section data-filterable="" data-scope="user" id="filmMembership">
 <h2>11. 영화인 멤버십 <sup class="fn-sup"><button aria-controls="fn-11" aria-expanded="false" class="fn-ref" data-fn="fn-11" id="fnref-11" title="각주 11" type="button">11</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>영화인 멤버십(연회비·무통장입금·KOBIS 영화인 검색 연동)의 신청/상태/환불 규정을 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>신청 시 KOBIS 영화인 정보 조회/선택 + 관심 영화 정보(필수) 입력.</li><li>상태값(신청/입금확인/확정/반려/환불 등)은 CMS 처리 프로세스와 1:1 대응.</li><li>환불 가능 기한(입금확인완료 처리일 기준 7일 등)과 첨부파일 정책을 엄격히 적용.</li></ul></div></div>
 <details open="">
 <summary>개요</summary>
@@ -1169,8 +1164,7 @@
 <li>첨부파일: <code>pdf, jpg/jpeg, png, svg</code> / 30MB 이하 / 단일 업로드.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="seoulmoviecenter">
+</section><section data-filterable="" data-scope="user" id="seoulmoviecenter">
 <h2>12. 서울영화센터(정보/고객센터) <sup class="fn-sup"><button aria-controls="fn-12" aria-expanded="false" class="fn-ref" data-fn="fn-12" id="fnref-12" title="각주 12" type="button">12</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>센터 소개/이용안내/고객센터(Q&amp;A 등) 성격의 정보성 콘텐츠를 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>다국어 페이지(소개)의 번역 범위/콘텐츠 소스(정적/관리자 입력)를 확정.</li><li>Q&amp;A(1:1 문의) 개인정보 처리/보관/답변 SLA를 운영 정책으로 정의.</li><li>공지/이벤트/FAQ 등 게시물은 CMS 게시글 관리와 동일한 필드/첨부 정책을 공유.</li></ul></div></div>
 <details open="">
 <summary>구성</summary>
@@ -1195,8 +1189,7 @@
 <li>작성/상세/답변 구조(관리자 답변 포함)를 갖는 전형적인 1:1 문의 게시판 흐름입니다.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="calendar">
+</section><section data-filterable="" data-scope="user" id="calendar">
 <h2>13. 통합캘린더 <sup class="fn-sup"><button aria-controls="fn-13" aria-expanded="false" class="fn-ref" data-fn="fn-13" id="fnref-13" title="각주 13" type="button">13</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>영화/전시/교육/시설 등 여러 일정을 한 화면에서 보는 통합 캘린더 기능을 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>캘린더에 포함되는 대상(카테고리)과 필터 규칙을 확정.</li><li>휴관일/미노출 콘텐츠가 캘린더에 노출되지 않도록 데이터 필터링 필요.</li><li>대량 데이터(월간 조회) 성능과 API 호출량(캐시)을 고려.</li></ul></div></div>
 <details open="">
 <summary>무엇을 보여주나?</summary>
@@ -1212,8 +1205,7 @@
 <li>영화는 외부 연동(디트릭스)이므로 “타임존/상영시간 변경/상영취소” 같은 이벤트 처리 전략 확인 필요.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="search">
+</section><section data-filterable="" data-scope="user" id="search">
 <h2>14. 통합검색 <sup class="fn-sup"><button aria-controls="fn-14" aria-expanded="false" class="fn-ref" data-fn="fn-14" id="fnref-14" title="각주 14" type="button">14</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>사이트 전체에서 영화/전시/교육/게시물 등 콘텐츠를 찾는 통합검색 범위를 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>검색 대상 카테고리/정렬/노출 규칙(하이라이트, 페이징)을 명확히.</li><li>개인정보/민감 정보가 검색 결과에 노출되지 않도록 인덱싱 정책 필요.</li><li>CMS 콘텐츠 변경 시 검색 인덱스 반영(실시간/배치) 방식을 확정.</li></ul></div></div>
 <details open="">
 <summary>검색 대상(카테고리)</summary>
@@ -1232,8 +1224,7 @@
 <li>따라서 검색에서 ‘영화’ 결과가 “콘텐츠(영화 정보)”인지, “상영/예매 영역”까지 포함하는지, 실제 연동 범위를 확정해야 합니다.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="user" id="mypage">
+</section><section data-filterable="" data-scope="user" id="mypage">
 <h2>15. 마이페이지 <sup class="fn-sup"><button aria-controls="fn-15" aria-expanded="false" class="fn-ref" data-fn="fn-15" id="fnref-15" title="각주 15" type="button">15</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>마이페이지에서 예약/신청/환불/쿠폰/소셜 연동 등 개인화 기능을 제공하는 범위를 정리합니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>사용자 신청/예약 내역은 각 도메인(교육/시설/멤버십/영화 예매) 상태와 동기화.</li><li>취소/환불은 정책에 따라 버튼 활성/비활성 및 안내 문구가 바뀌도록 구현.</li><li>소셜 계정 연동은 로그인 정책과 일관되게(연동해제 시 로그인 수단 확인).</li></ul></div></div>
 <details open="">
 <summary>역할</summary>
@@ -1264,8 +1255,7 @@
 <li>연동/해제 시 확인창, 해제 처리 후 연동 상태 갱신</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="admin" id="admin-overview">
+</section><section data-filterable="" data-scope="admin" id="admin-overview">
 <h2>16. 관리자(CMS) 개요 <sup class="fn-sup"><button aria-controls="fn-16" aria-expanded="false" class="fn-ref" data-fn="fn-16" id="fnref-16" title="각주 16" type="button">16</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>관리자(CMS)는 홈페이지 운영자가 배너/팝업/콘텐츠, 프로그램(영화·전시·교육·시설), 회원/멤버십, 통계, 시스템 설정을 관리하는 백오피스입니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>로그인 후 인증번호 입력 단계가 있어 보안(2FA) 흐름을 구현 방식까지 확정. <sup class="fn-sup"><button aria-controls="fn-32" aria-expanded="false" class="fn-ref" data-fn="fn-32" id="fnref-32" title="각주 32" type="button">32</button></sup></li><li>알림톡(카카오) on/off 등 운영 설정은 권한 통제 및 로그(누가 언제 변경) 필요.</li><li>대시보드 지표는 Front의 집계 기준과 불일치하지 않도록 정의서로 고정.</li></ul></div></div>
 <details open="">
 <summary>관리자 시스템 범위</summary>
@@ -1477,8 +1467,7 @@
 <li>배너/팝업/게시글 첨부 업로드 용량(50MB)과 Front 업로드 정책(30MB)의 <strong>정책 정합성</strong>을 확정하세요.</li>
 </ul>
 </details>
-</section>
-<section data-filterable="" data-scope="common" id="appendix">
+</section><section data-filterable="" data-scope="common" id="appendix">
 <h2>23. 부록 <sup class="fn-sup"><button aria-controls="fn-23" aria-expanded="false" class="fn-ref" data-fn="fn-23" id="fnref-23" title="각주 23" type="button">23</button></sup></h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>용어, 상태값, 참고 링크 등 보조 정보를 모아둔 섹션입니다.</p></div><div class="meta-card"><div class="meta-title">요건</div><ul><li>인수인계 시 필요한 내부 용어(디트릭스/KOBIS 등) 정의를 최신화.</li><li>상태값/코드값 변경 시 이 부록(및 CMS 코드관리)을 함께 갱신.</li></ul></div></div>
 <details open="">
 <summary>용어(간단)</summary>
@@ -1498,12 +1487,11 @@
 </ul>
 </details>
 <p class="muted">끝. (이 페이지는 인수인계용 요약이며, 세부 UI 문구/레이아웃/예외 케이스는 원본 PDF를 최종 근거로 삼으세요.)</p>
-</section><section data-filterable="" data-scope="always" id="footnotes"><h2>24. 각주/근거</h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>본문의 각주 번호는 원문(사용자 PDF/관리자 PPTX)의 페이지·슬라이드 근거를 가리킵니다. 숫자를 클릭하면 툴팁으로도 확인할 수 있습니다.</p></div><div class="meta-card"><div class="meta-title">사용 방법</div><ul><li>각주 숫자 클릭: 해당 근거를 툴팁으로 즉시 확인</li><li>툴팁의 ‘각주로 이동’ 클릭: 문서 최하단 각주 목록으로 스크롤</li><li>각주 목록의 ‘↩︎’ 클릭: 원래 위치로 복귀</li></ul></div></div><div class="footnotes"><ol class="footnotes-list"><li data-scope="common" id="fn-1"><div class="fn-meta">근거: 사용자 PDF p.1-2 / 관리자 PPTX slide 1</div><p class="fn-text">사용자 기획서 표지에 ver1.5(최종 작성일 2025-10-23) 표기가 있으며, 관리자 기획서 표지에는 v0.9(2025-09-09)로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-1">↩︎</a></li><li data-scope="common" id="fn-2"><div class="fn-meta">근거: 사용자 PDF p.5-7 / 관리자 PPTX slide 5</div><p class="fn-text">사용자 IA(Depth1~3) 및 화면ID(UI-*) 목록 표와 GNB/검색(250자 제한) 설명이 포함됩니다. 관리자 문서는 CMS 메뉴 구성을 별도 슬라이드로 제시합니다.</p><a class="fn-back" href="#fnref-2">↩︎</a></li><li data-scope="common" id="fn-3"><div class="fn-meta">근거: 사용자 PDF p.55-60, p.74, p.93-96, p.111, p.113 / 관리자 PPTX slide 11, 120-121</div><p class="fn-text">디트릭스(영화예매/영화정보)·KOBIS(영화인 멤버십)·알림톡(교육/신청 안내)·통합캘린더/통합검색 등 외부 연동 포인트가 사용자 문서에 산재하며, 관리자 문서에는 알림톡 트리거 on/off 및 API 연계 관리(Endpoint/Key/Token) UI가 포함됩니다.</p><a class="fn-back" href="#fnref-3">↩︎</a></li><li data-scope="common" id="fn-4"><div class="fn-meta">근거: 사용자 PDF p.33, p.71, p.80, p.85, p.94 / 관리자 PPTX slide 13, 47, 69, 97, 121</div><p class="fn-text">로그인 실패 제한(5회), 첨부파일 업로드(30MB·확장자 제한·필수 여부), 시설대관 입금확인/상태값 등 공통 정책이 사용자 문서에 정의되어 있고, CMS는 업로드 제한(50MB)·게시글 첨부·이전자료 삭제(복구불가)·API Key/Token 관리 등 운영/보안 요소가 추가됩니다.</p><a class="fn-back" href="#fnref-4">↩︎</a></li><li data-scope="user" id="fn-5"><div class="fn-meta">근거: 사용자 PDF p.10-36 (UI-JU-*, UI-AU-*)</div><p class="fn-text">회원가입(일반/어린이), 로그인, 아이디/비밀번호 찾기, 소셜 로그인(네이버/카카오) 및 예외 팝업 흐름이 이 범위에 정의됩니다.</p><a class="fn-back" href="#fnref-5">↩︎</a></li><li data-scope="user" id="fn-6"><div class="fn-meta">근거: 사용자 PDF p.54-61 (UI-MV-*)</div><p class="fn-text">영화 목록/상세 및 디트릭스 예매(비회원 예매 포함), 지난 상영작, 추천(‘이 영화 어때요?’) 등 영화 영역 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-6">↩︎</a></li><li data-scope="user" id="fn-7"><div class="fn-meta">근거: 사용자 PDF p.63-65 (UI-EV-*)</div><p class="fn-text">전시·행사 목록/상세(기간/장소/요금/문의/본문 등) 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-7">↩︎</a></li><li data-scope="user" id="fn-8"><div class="fn-meta">근거: 사용자 PDF p.67-77 (UI-ED-*)</div><p class="fn-text">교육 목록/상세/신청/완료 및 선정/결제/대기 등 상태 흐름과 안내(알림톡 포함)가 정의된 범위입니다.</p><a class="fn-back" href="#fnref-8">↩︎</a></li><li data-scope="user" id="fn-9"><div class="fn-meta">근거: 사용자 PDF p.79-88, p.178 (UI-FL-*, 약관/운영규정)</div><p class="fn-text">시설대관 목록/상세/신청/완료 및 입금확인 프로세스, 취소/환불/계약금·잔금 규정(약관)이 포함된 범위입니다.</p><a class="fn-back" href="#fnref-9">↩︎</a></li><li data-scope="user" id="fn-10"><div class="fn-meta">근거: 사용자 PDF p.90-93 (UI-MB-01-*)</div><p class="fn-text">멤버십(일반) 소개/안내 및 신청/완료 흐름이 정의된 범위입니다.</p><a class="fn-back" href="#fnref-10">↩︎</a></li><li data-scope="user" id="fn-11"><div class="fn-meta">근거: 사용자 PDF p.94-97 (UI-MB-02-*)</div><p class="fn-text">영화인 멤버십 신청(KOBIS 영화인 검색, 작품참여내역서 첨부) 및 처리/상태 흐름이 정의된 범위입니다.</p><a class="fn-back" href="#fnref-11">↩︎</a></li><li data-scope="user" id="fn-12"><div class="fn-meta">근거: 사용자 PDF p.99-109 (UI-SM-*)</div><p class="fn-text">서울영화센터 소개/대관/시설·상영관 안내 등 관련 콘텐츠 페이지 설계 범위입니다.</p><a class="fn-back" href="#fnref-12">↩︎</a></li><li data-scope="user" id="fn-13"><div class="fn-meta">근거: 사용자 PDF p.111 (UI-CL-01-*)</div><p class="fn-text">통합캘린더 화면(전시/교육/시설 등 일정 통합) 및 데이터 소스 메모가 포함됩니다.</p><a class="fn-back" href="#fnref-13">↩︎</a></li><li data-scope="user" id="fn-14"><div class="fn-meta">근거: 사용자 PDF p.113-114 (UI-SE-01-*)</div><p class="fn-text">통합검색 구성(콘텐츠 범위/검색 UX)과 ‘영화예매 연동 확인 필요’ 메모가 포함된 범위입니다.</p><a class="fn-back" href="#fnref-14">↩︎</a></li><li data-scope="user" id="fn-15"><div class="fn-meta">근거: 사용자 PDF p.126-225 (UI-MP-*)</div><p class="fn-text">마이페이지(회원정보, 예매내역, 신청/결제/환불, 멤버십 상태 등) 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-15">↩︎</a></li><li data-scope="admin" id="fn-16"><div class="fn-meta">근거: 관리자 PPTX slide 7-11</div><p class="fn-text">CMS 로그인(인증번호 단계), 대시보드, 관리자 프로필/정보수정, 알림 설정(카카오 알림톡) 화면 범위입니다.</p><a class="fn-back" href="#fnref-16">↩︎</a></li><li data-scope="admin" id="fn-17"><div class="fn-meta">근거: 관리자 PPTX slide 12-20</div><p class="fn-text">공통관리(메인배너/팝업/콘텐츠 관리) 목록/등록/수정/삭제 및 업로드 제한 표기가 포함됩니다.</p><a class="fn-back" href="#fnref-17">↩︎</a></li><li data-scope="admin" id="fn-18"><div class="fn-meta">근거: 관리자 PPTX slide 22-58</div><p class="fn-text">영화/전시·행사/교육/시설대관 콘텐츠 운영(등록/수정/삭제)과 신청자·예약자 상태 관리, 휴관일 설정 화면 범위입니다.</p><a class="fn-back" href="#fnref-18">↩︎</a></li><li data-scope="admin" id="fn-19"><div class="fn-meta">근거: 관리자 PPTX slide 59-67</div><p class="fn-text">회원 목록/상세, 비밀번호 초기화/잠김해제, 멤버십 신청 승인/반려(반려 사유 필수), 쿠폰 사용 이력 등 회원/멤버십 관리 범위입니다.</p><a class="fn-back" href="#fnref-19">↩︎</a></li><li data-scope="admin" id="fn-20"><div class="fn-meta">근거: 관리자 PPTX slide 68-75</div><p class="fn-text">공지/이벤트/FAQ/Q&amp;A 등 게시글·고객센터 콘텐츠 관리(첨부/유튜브 ID 입력 포함) 범위입니다.</p><a class="fn-back" href="#fnref-20">↩︎</a></li><li data-scope="admin" id="fn-21"><div class="fn-meta">근거: 관리자 PPTX slide 76-129</div><p class="fn-text">통계 대시보드, 관리자 관리, 시스템 관리(메뉴/코드/오류/개인정보 이력, 이전자료 삭제, API 연계 관리 등) 범위입니다.</p><a class="fn-back" href="#fnref-21">↩︎</a></li><li data-scope="common" id="fn-22"><div class="fn-meta">근거: 사용자 PDF p.113, p.80 / 관리자 PPTX slide 13, 47, 69</div><p class="fn-text">원문에 ‘확인 필요’로 남겨진 연동 범위(예: 통합검색의 영화예매)와 Front↔CMS 정책 불일치 가능 지점(업로드 용량/확장자, 시설 상태값 운영)을 인수인계 리스크로 정리한 섹션입니다.</p><a class="fn-back" href="#fnref-22">↩︎</a></li><li data-scope="common" id="fn-23"><div class="fn-meta">근거: 사용자 PDF p.116-123 (UI-PR/UI-TU/UI-EM 등)</div><p class="fn-text">약관/운영규정/이메일무단수집거부 등 법·운영 문서 영역이 별도 화면ID로 포함되어 있어, 실제 문구 확정 및 Front/CMS 동기화가 필요합니다.</p><a class="fn-back" href="#fnref-23">↩︎</a></li><li data-scope="common" id="fn-24"><div class="fn-meta">근거: 사용자 PDF p.71 (UI-ED-01-004)</div><p class="fn-text">교육 신청(작성) 화면의 첨부파일: 30MB 이하, hwp/pdf/doc/docx 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-24">↩︎</a></li><li data-scope="common" id="fn-25"><div class="fn-meta">근거: 사용자 PDF p.85 (UI-FL-01-006)</div><p class="fn-text">시설대관 신청(작성) 화면의 대관신청서 첨부파일: 30MB 이하, hwp/pdf/doc/docx 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-25">↩︎</a></li><li data-scope="common" id="fn-26"><div class="fn-meta">근거: 사용자 PDF p.94 (UI-MB-02-001)</div><p class="fn-text">영화인 멤버십 신청 화면의 작품참여내역서 첨부파일: 30MB 이하, pdf/jpg/jpeg/png/svg 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-26">↩︎</a></li><li data-scope="common" id="fn-27"><div class="fn-meta">근거: 사용자 PDF p.33 (UI-AU-01-002)</div><p class="fn-text">일반 로그인에서 로그인 정보 5회 불일치 시 로그인 제한(예: 30분) 및 확인창 노출 등 보안 정책이 표기되어 있습니다.</p><a class="fn-back" href="#fnref-27">↩︎</a></li><li data-scope="user" id="fn-28"><div class="fn-meta">근거: 사용자 PDF p.74 (UI-ED-01-007 등)</div><p class="fn-text">교육 수강료 결제는 ‘접수 마감 후’ 가능하며, 접수 마감/선정 완료 시 알림톡으로 안내된다고 명시되어 있습니다.</p><a class="fn-back" href="#fnref-28">↩︎</a></li><li data-scope="user" id="fn-29"><div class="fn-meta">근거: 사용자 PDF p.80-81, p.178</div><p class="fn-text">상영관 대관의 계약금/잔금 납부 및 입금확인 프로세스(예: 계약금 50%·잔금 50%)와 취소/환불 규정이 문서에 포함됩니다.</p><a class="fn-back" href="#fnref-29">↩︎</a></li><li data-scope="user" id="fn-30"><div class="fn-meta">근거: 사용자 PDF p.35 (소셜 로그인 설명)</div><p class="fn-text">네이버 소셜 로그인은 ‘네이버 식별자’로 연동 회원 여부를 식별하는 흐름, 미가입/미연동 시 확인창 노출 등의 절차가 설명되어 있습니다.</p><a class="fn-back" href="#fnref-30">↩︎</a></li><li data-scope="user" id="fn-31"><div class="fn-meta">근거: 사용자 PDF p.113 (UI-SE-01-001)</div><p class="fn-text">통합검색 문서에 ‘영화예매는 확인필요(디트릭스 API로 바로 불러오는지)’ 메모가 명시되어 있습니다.</p><a class="fn-back" href="#fnref-31">↩︎</a></li><li data-scope="admin" id="fn-32"><div class="fn-meta">근거: 관리자 PPTX slide 7</div><p class="fn-text">CMS 로그인 이후 ‘인증번호 입력’ 단계가 별도로 존재합니다(2차 인증/보안 단계로 해석).</p><a class="fn-back" href="#fnref-32">↩︎</a></li><li data-scope="admin" id="fn-33"><div class="fn-meta">근거: 관리자 PPTX slide 11</div><p class="fn-text">관리자 알림 설정(알림채널=카카오알림톡): 영화/전시/교육/시설/회원/멤버십 등 이벤트별 일괄 on/off UI가 제시됩니다.</p><a class="fn-back" href="#fnref-33">↩︎</a></li><li data-scope="admin" id="fn-34"><div class="fn-meta">근거: 관리자 PPTX slide 13</div><p class="fn-text">메인배너 업로드 제한: 최대 50MB, 최대 1개, 확장자 jpg/png/jpeg, 권장 이미지 사이즈 1920×947로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-34">↩︎</a></li><li data-scope="admin" id="fn-35"><div class="fn-meta">근거: 관리자 PPTX slide 17-18</div><p class="fn-text">팝업 관리: 사용여부, 레이어, 자동/수동, 위치/사이즈(가로×세로), 링크 URL, 타겟(현재창) 등의 입력 필드가 존재합니다.</p><a class="fn-back" href="#fnref-35">↩︎</a></li><li data-scope="admin" id="fn-36"><div class="fn-meta">근거: 관리자 PPTX slide 20</div><p class="fn-text">콘텐츠 관리 업로드 제한: 최대 50MB, 최대 1개, 확장자 jpg/png/jpeg, 이미지 사이즈 ‘협의’로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-36">↩︎</a></li><li data-scope="admin" id="fn-37"><div class="fn-meta">근거: 관리자 PPTX slide 47, 57</div><p class="fn-text">시설(공유오피스/상영관) 등록: 이미지 업로드(최대 50MB·10개·jpg/png/jpeg)와 별도 첨부(최대 50MB·1개·hwp/pdf/xls/xlsx/ppt/pptx/docx/odt) 필드가 제시됩니다.</p><a class="fn-back" href="#fnref-37">↩︎</a></li><li data-scope="admin" id="fn-38"><div class="fn-meta">근거: 관리자 PPTX slide 55</div><p class="fn-text">시설대관 신청상태: 예약 날짜가 지난 ‘입금확인완료’ 상태를 관리자가 ‘이용완료’로 값만 변경한다는 운영 메모가 포함됩니다.</p><a class="fn-back" href="#fnref-38">↩︎</a></li><li data-scope="admin" id="fn-39"><div class="fn-meta">근거: 관리자 PPTX slide 69, 71, 73</div><p class="fn-text">게시글 첨부 업로드 제한: 최대 50MB, 최대 10개, 확장자(jpg/jpeg/png/hwp/pdf/xls/xlsx/ppt/pptx/docx/odt 등) 표기 및 유튜브 ID 입력 가이드가 포함됩니다.</p><a class="fn-back" href="#fnref-39">↩︎</a></li><li data-scope="admin" id="fn-40"><div class="fn-meta">근거: 관리자 PPTX slide 36</div><p class="fn-text">교육 신청자 현황 등에서 개인정보 엑셀 다운로드 시 ‘다운로드 사유’ 입력과 ‘관리자 비밀번호’ 입력을 요구하는 모달이 제시됩니다.</p><a class="fn-back" href="#fnref-40">↩︎</a></li><li data-scope="admin" id="fn-41"><div class="fn-meta">근거: 관리자 PPTX slide 97</div><p class="fn-text">관리자 접속 이력 등에서 ‘이전자료 삭제’를 제공하며, 삭제한 자료는 복구 불가하다는 경고 문구가 포함됩니다.</p><a class="fn-back" href="#fnref-41">↩︎</a></li><li data-scope="admin" id="fn-42"><div class="fn-meta">근거: 관리자 PPTX slide 120-121</div><p class="fn-text">시스템 관리 &gt; API 연계 관리: EndPoint URL, 인증 Key/Token, 요청 파라미터 입력 등 연계 설정 UI가 존재합니다.</p><a class="fn-back" href="#fnref-42">↩︎</a></li><li data-scope="admin" id="fn-43"><div class="fn-meta">근거: 관리자 PPTX slide 111</div><p class="fn-text">사용자 메뉴 관리 화면에 ‘권장 사이즈: 1920px × 400px’ 표기가 포함됩니다(적용 대상은 운영에서 재확인 필요).</p><a class="fn-back" href="#fnref-43">↩︎</a></li><li data-scope="common" id="fn-44"><div class="fn-meta">근거: 사용자 PDF p.85 / 관리자 PPTX slide 47, 57</div><p class="fn-text">시설대관 신청서 첨부 확장자 정책이 Front(사용자 문서)와 CMS(관리자 문서)에서 상이하게 표기되어 있습니다. 운영·개발 합의 후 단일 정책으로 확정이 필요합니다.</p><a class="fn-back" href="#fnref-44">↩︎</a></li></ol></div></section>
+</section><section data-filterable="" data-scope="always" id="footnotes"><h2>24. 각주/근거</h2><div class="section-meta"><div class="meta-card"><div class="meta-title">요약</div><p>본문의 각주 번호는 원문(사용자 PDF/관리자 PPTX)의 페이지·슬라이드 근거를 가리킵니다. 숫자를 클릭하면 툴팁으로도 확인할 수 있습니다.</p></div><div class="meta-card"><div class="meta-title">사용 방법</div><ul><li>각주 숫자 클릭: 해당 근거를 툴팁으로 즉시 확인</li><li>툴팁의 ‘각주로 이동’ 클릭: 문서 최하단 각주 목록으로 스크롤</li><li>각주 목록의 ‘↩︎’ 클릭: 원래 위치로 복귀</li></ul></div></div><div class="footnotes"><ol class="footnotes-list"><li data-scope="common" id="fn-1"><div class="fn-meta">근거: 사용자 PDF p.1-2 / 관리자 PPTX slide 1</div><p class="fn-text">사용자 기획서 표지에 ver1.5(최종 작성일 2025-10-23) 표기가 있으며, 관리자 기획서 표지에는 v0.9(2025-09-09)로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-1">↩︎</a></li><li data-scope="common" id="fn-2"><div class="fn-meta">근거: 사용자 PDF p.5-7 / 관리자 PPTX slide 5</div><p class="fn-text">사용자 IA(Depth1~3) 및 화면ID(UI-*) 목록 표와 GNB/검색(250자 제한) 설명이 포함됩니다. 관리자 문서는 CMS 메뉴 구성을 별도 슬라이드로 제시합니다.</p><a class="fn-back" href="#fnref-2">↩︎</a></li><li data-scope="common" id="fn-3"><div class="fn-meta">근거: 사용자 PDF p.55-60, p.74, p.93-96, p.111, p.113 / 관리자 PPTX slide 11, 120-121</div><p class="fn-text">디트릭스(영화예매/영화정보)·KOBIS(영화인 멤버십)·알림톡(교육/신청 안내)·통합캘린더/통합검색 등 외부 연동 포인트가 사용자 문서에 산재하며, 관리자 문서에는 알림톡 트리거 on/off 및 API 연계 관리(Endpoint/Key/Token) UI가 포함됩니다.</p><a class="fn-back" href="#fnref-3">↩︎</a></li><li data-scope="common" id="fn-4"><div class="fn-meta">근거: 사용자 PDF p.33, p.71, p.80, p.85, p.94 / 관리자 PPTX slide 13, 47, 69, 97, 121</div><p class="fn-text">로그인 실패 제한(5회), 첨부파일 업로드(30MB·확장자 제한·필수 여부), 시설대관 입금확인/상태값 등 공통 정책이 사용자 문서에 정의되어 있고, CMS는 업로드 제한(50MB)·게시글 첨부·이전자료 삭제(복구불가)·API Key/Token 관리 등 운영/보안 요소가 추가됩니다.</p><a class="fn-back" href="#fnref-4">↩︎</a></li><li data-scope="user" id="fn-5"><div class="fn-meta">근거: 사용자 PDF p.10-36 (UI-JU-*, UI-AU-*)</div><p class="fn-text">회원가입(일반/어린이), 로그인, 아이디/비밀번호 찾기, 소셜 로그인(네이버/카카오) 및 예외 팝업 흐름이 이 범위에 정의됩니다.</p><a class="fn-back" href="#fnref-5">↩︎</a></li><li data-scope="user" id="fn-6"><div class="fn-meta">근거: 사용자 PDF p.54-61 (UI-MV-*)</div><p class="fn-text">영화 목록/상세 및 디트릭스 예매(비회원 예매 포함), 지난 상영작, 추천(‘이 영화 어때요?’) 등 영화 영역 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-6">↩︎</a></li><li data-scope="user" id="fn-7"><div class="fn-meta">근거: 사용자 PDF p.63-65 (UI-EV-*)</div><p class="fn-text">전시·행사 목록/상세(기간/장소/요금/문의/본문 등) 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-7">↩︎</a></li><li data-scope="user" id="fn-8"><div class="fn-meta">근거: 사용자 PDF p.67-77 (UI-ED-*)</div><p class="fn-text">교육 목록/상세/신청/완료 및 선정/결제/대기 등 상태 흐름과 안내(알림톡 포함)가 정의된 범위입니다.</p><a class="fn-back" href="#fnref-8">↩︎</a></li><li data-scope="user" id="fn-9"><div class="fn-meta">근거: 사용자 PDF p.79-88, p.178 (UI-FL-*, 약관/운영규정)</div><p class="fn-text">시설대관 목록/상세/신청/완료 및 입금확인 프로세스, 취소/환불/계약금·잔금 규정(약관)이 포함된 범위입니다.</p><a class="fn-back" href="#fnref-9">↩︎</a></li><li data-scope="user" id="fn-10"><div class="fn-meta">근거: 사용자 PDF p.90-93 (UI-MB-01-*)</div><p class="fn-text">멤버십(일반) 소개/안내 및 신청/완료 흐름이 정의된 범위입니다.</p><a class="fn-back" href="#fnref-10">↩︎</a></li><li data-scope="user" id="fn-11"><div class="fn-meta">근거: 사용자 PDF p.94-97 (UI-MB-02-*)</div><p class="fn-text">영화인 멤버십 신청(KOBIS 영화인 검색, 작품참여내역서 첨부) 및 처리/상태 흐름이 정의된 범위입니다.</p><a class="fn-back" href="#fnref-11">↩︎</a></li><li data-scope="user" id="fn-12"><div class="fn-meta">근거: 사용자 PDF p.99-109 (UI-SM-*)</div><p class="fn-text">서울영화센터 소개/대관/시설·상영관 안내 등 관련 콘텐츠 페이지 설계 범위입니다.</p><a class="fn-back" href="#fnref-12">↩︎</a></li><li data-scope="user" id="fn-13"><div class="fn-meta">근거: 사용자 PDF p.111 (UI-CL-01-*)</div><p class="fn-text">통합캘린더 화면(전시/교육/시설 등 일정 통합) 및 데이터 소스 메모가 포함됩니다.</p><a class="fn-back" href="#fnref-13">↩︎</a></li><li data-scope="user" id="fn-14"><div class="fn-meta">근거: 사용자 PDF p.113-114 (UI-SE-01-*)</div><p class="fn-text">통합검색 구성(콘텐츠 범위/검색 UX)과 ‘영화예매 연동 확인 필요’ 메모가 포함된 범위입니다.</p><a class="fn-back" href="#fnref-14">↩︎</a></li><li data-scope="user" id="fn-15"><div class="fn-meta">근거: 사용자 PDF p.126-225 (UI-MP-*)</div><p class="fn-text">마이페이지(회원정보, 예매내역, 신청/결제/환불, 멤버십 상태 등) 화면 설계 범위입니다.</p><a class="fn-back" href="#fnref-15">↩︎</a></li><li data-scope="admin" id="fn-16"><div class="fn-meta">근거: 관리자 PPTX slide 7-11</div><p class="fn-text">CMS 로그인(인증번호 단계), 대시보드, 관리자 프로필/정보수정, 알림 설정(카카오 알림톡) 화면 범위입니다.</p><a class="fn-back" href="#fnref-16">↩︎</a></li><li data-scope="admin" id="fn-17"><div class="fn-meta">근거: 관리자 PPTX slide 12-20</div><p class="fn-text">공통관리(메인배너/팝업/콘텐츠 관리) 목록/등록/수정/삭제 및 업로드 제한 표기가 포함됩니다.</p><a class="fn-back" href="#fnref-17">↩︎</a></li><li data-scope="admin" id="fn-18"><div class="fn-meta">근거: 관리자 PPTX slide 22-58</div><p class="fn-text">영화/전시·행사/교육/시설대관 콘텐츠 운영(등록/수정/삭제)과 신청자·예약자 상태 관리, 휴관일 설정 화면 범위입니다.</p><a class="fn-back" href="#fnref-18">↩︎</a></li><li data-scope="admin" id="fn-19"><div class="fn-meta">근거: 관리자 PPTX slide 59-67</div><p class="fn-text">회원 목록/상세, 비밀번호 초기화/잠김해제, 멤버십 신청 승인/반려(반려 사유 필수), 쿠폰 사용 이력 등 회원/멤버십 관리 범위입니다.</p><a class="fn-back" href="#fnref-19">↩︎</a></li><li data-scope="admin" id="fn-20"><div class="fn-meta">근거: 관리자 PPTX slide 68-75</div><p class="fn-text">공지/이벤트/FAQ/Q&amp;A 등 게시글·고객센터 콘텐츠 관리(첨부/유튜브 ID 입력 포함) 범위입니다.</p><a class="fn-back" href="#fnref-20">↩︎</a></li><li data-scope="admin" id="fn-21"><div class="fn-meta">근거: 관리자 PPTX slide 76-129</div><p class="fn-text">통계 대시보드, 관리자 관리, 시스템 관리(메뉴/코드/오류/개인정보 이력, 이전자료 삭제, API 연계 관리 등) 범위입니다.</p><a class="fn-back" href="#fnref-21">↩︎</a></li><li data-scope="common" id="fn-22"><div class="fn-meta">근거: 사용자 PDF p.113, p.80 / 관리자 PPTX slide 13, 47, 69</div><p class="fn-text">원문에 ‘확인 필요’로 남겨진 연동 범위(예: 통합검색의 영화예매)와 Front↔CMS 정책 불일치 가능 지점(업로드 용량/확장자, 시설 상태값 운영)을 인수인계 리스크로 정리한 섹션입니다.</p><a class="fn-back" href="#fnref-22">↩︎</a></li><li data-scope="common" id="fn-23"><div class="fn-meta">근거: 사용자 PDF p.116-123 (UI-PR/UI-TU/UI-EM 등)</div><p class="fn-text">약관/운영규정/이메일무단수집거부 등 법·운영 문서 영역이 별도 화면ID로 포함되어 있어, 실제 문구 확정 및 Front/CMS 동기화가 필요합니다.</p><a class="fn-back" href="#fnref-23">↩︎</a></li><li data-scope="common" id="fn-24"><div class="fn-meta">근거: 사용자 PDF p.71 (UI-ED-01-004)</div><p class="fn-text">교육 신청(작성) 화면의 첨부파일: 30MB 이하, hwp/pdf/doc/docx 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-24">↩︎</a></li><li data-scope="common" id="fn-25"><div class="fn-meta">근거: 사용자 PDF p.85 (UI-FL-01-006)</div><p class="fn-text">시설대관 신청(작성) 화면의 대관신청서 첨부파일: 30MB 이하, hwp/pdf/doc/docx 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-25">↩︎</a></li><li data-scope="common" id="fn-26"><div class="fn-meta">근거: 사용자 PDF p.94 (UI-MB-02-001)</div><p class="fn-text">영화인 멤버십 신청 화면의 작품참여내역서 첨부파일: 30MB 이하, pdf/jpg/jpeg/png/svg 업로드 가능, 필수 업로드로 표시됩니다.</p><a class="fn-back" href="#fnref-26">↩︎</a></li><li data-scope="common" id="fn-27"><div class="fn-meta">근거: 사용자 PDF p.33 (UI-AU-01-002)</div><p class="fn-text">일반 로그인에서 로그인 정보 5회 불일치 시 로그인 제한(예: 30분) 및 확인창 노출 등 보안 정책이 표기되어 있습니다.</p><a class="fn-back" href="#fnref-27">↩︎</a></li><li data-scope="user" id="fn-28"><div class="fn-meta">근거: 사용자 PDF p.74 (UI-ED-01-007 등)</div><p class="fn-text">교육 수강료 결제는 ‘접수 마감 후’ 가능하며, 접수 마감/선정 완료 시 알림톡으로 안내된다고 명시되어 있습니다.</p><a class="fn-back" href="#fnref-28">↩︎</a></li><li data-scope="user" id="fn-29"><div class="fn-meta">근거: 사용자 PDF p.80-81, p.178</div><p class="fn-text">상영관 대관의 계약금/잔금 납부 및 입금확인 프로세스(예: 계약금 50%·잔금 50%)와 취소/환불 규정이 문서에 포함됩니다.</p><a class="fn-back" href="#fnref-29">↩︎</a></li><li data-scope="user" id="fn-30"><div class="fn-meta">근거: 사용자 PDF p.35 (소셜 로그인 설명)</div><p class="fn-text">네이버 소셜 로그인은 ‘네이버 식별자’로 연동 회원 여부를 식별하는 흐름, 미가입/미연동 시 확인창 노출 등의 절차가 설명되어 있습니다.</p><a class="fn-back" href="#fnref-30">↩︎</a></li><li data-scope="user" id="fn-31"><div class="fn-meta">근거: 사용자 PDF p.113 (UI-SE-01-001)</div><p class="fn-text">통합검색 문서에 ‘영화예매는 확인필요(디트릭스 API로 바로 불러오는지)’ 메모가 명시되어 있습니다.</p><a class="fn-back" href="#fnref-31">↩︎</a></li><li data-scope="admin" id="fn-32"><div class="fn-meta">근거: 관리자 PPTX slide 7</div><p class="fn-text">CMS 로그인 이후 ‘인증번호 입력’ 단계가 별도로 존재합니다(2차 인증/보안 단계로 해석).</p><a class="fn-back" href="#fnref-32">↩︎</a></li><li data-scope="admin" id="fn-33"><div class="fn-meta">근거: 관리자 PPTX slide 11</div><p class="fn-text">관리자 알림 설정(알림채널=카카오알림톡): 영화/전시/교육/시설/회원/멤버십 등 이벤트별 일괄 on/off UI가 제시됩니다.</p><a class="fn-back" href="#fnref-33">↩︎</a></li><li data-scope="admin" id="fn-34"><div class="fn-meta">근거: 관리자 PPTX slide 13</div><p class="fn-text">메인배너 업로드 제한: 최대 50MB, 최대 1개, 확장자 jpg/png/jpeg, 권장 이미지 사이즈 1920×947로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-34">↩︎</a></li><li data-scope="admin" id="fn-35"><div class="fn-meta">근거: 관리자 PPTX slide 17-18</div><p class="fn-text">팝업 관리: 사용여부, 레이어, 자동/수동, 위치/사이즈(가로×세로), 링크 URL, 타겟(현재창) 등의 입력 필드가 존재합니다.</p><a class="fn-back" href="#fnref-35">↩︎</a></li><li data-scope="admin" id="fn-36"><div class="fn-meta">근거: 관리자 PPTX slide 20</div><p class="fn-text">콘텐츠 관리 업로드 제한: 최대 50MB, 최대 1개, 확장자 jpg/png/jpeg, 이미지 사이즈 ‘협의’로 표기되어 있습니다.</p><a class="fn-back" href="#fnref-36">↩︎</a></li><li data-scope="admin" id="fn-37"><div class="fn-meta">근거: 관리자 PPTX slide 47, 57</div><p class="fn-text">시설(공유오피스/상영관) 등록: 이미지 업로드(최대 50MB·10개·jpg/png/jpeg)와 별도 첨부(최대 50MB·1개·hwp/pdf/xls/xlsx/ppt/pptx/docx/odt) 필드가 제시됩니다.</p><a class="fn-back" href="#fnref-37">↩︎</a></li><li data-scope="admin" id="fn-38"><div class="fn-meta">근거: 관리자 PPTX slide 55</div><p class="fn-text">시설대관 신청상태: 예약 날짜가 지난 ‘입금확인완료’ 상태를 관리자가 ‘이용완료’로 값만 변경한다는 운영 메모가 포함됩니다.</p><a class="fn-back" href="#fnref-38">↩︎</a></li><li data-scope="admin" id="fn-39"><div class="fn-meta">근거: 관리자 PPTX slide 69, 71, 73</div><p class="fn-text">게시글 첨부 업로드 제한: 최대 50MB, 최대 10개, 확장자(jpg/jpeg/png/hwp/pdf/xls/xlsx/ppt/pptx/docx/odt 등) 표기 및 유튜브 ID 입력 가이드가 포함됩니다.</p><a class="fn-back" href="#fnref-39">↩︎</a></li><li data-scope="admin" id="fn-40"><div class="fn-meta">근거: 관리자 PPTX slide 36</div><p class="fn-text">교육 신청자 현황 등에서 개인정보 엑셀 다운로드 시 ‘다운로드 사유’ 입력과 ‘관리자 비밀번호’ 입력을 요구하는 모달이 제시됩니다.</p><a class="fn-back" href="#fnref-40">↩︎</a></li><li data-scope="admin" id="fn-41"><div class="fn-meta">근거: 관리자 PPTX slide 97</div><p class="fn-text">관리자 접속 이력 등에서 ‘이전자료 삭제’를 제공하며, 삭제한 자료는 복구 불가하다는 경고 문구가 포함됩니다.</p><a class="fn-back" href="#fnref-41">↩︎</a></li><li data-scope="admin" id="fn-42"><div class="fn-meta">근거: 관리자 PPTX slide 120-121</div><p class="fn-text">시스템 관리 &gt; API 연계 관리: EndPoint URL, 인증 Key/Token, 요청 파라미터 입력 등 연계 설정 UI가 존재합니다.</p><a class="fn-back" href="#fnref-42">↩︎</a></li><li data-scope="admin" id="fn-43"><div class="fn-meta">근거: 관리자 PPTX slide 111</div><p class="fn-text">사용자 메뉴 관리 화면에 ‘권장 사이즈: 1920px × 400px’ 표기가 포함됩니다(적용 대상은 운영에서 재확인 필요).</p><a class="fn-back" href="#fnref-43">↩︎</a></li><li data-scope="common" id="fn-44"><div class="fn-meta">근거: 사용자 PDF p.85 / 관리자 PPTX slide 47, 57</div><p class="fn-text">시설대관 신청서 첨부 확장자 정책이 Front(사용자 문서)와 CMS(관리자 문서)에서 상이하게 표기되어 있습니다. 운영·개발 합의 후 단일 정책으로 확정이 필요합니다.</p><a class="fn-back" href="#fnref-44">↩︎</a></li></ol></div></section></div>
 <div class="floating">
 <button class="btn" id="topBtn" type="button">↑ Top</button>
 <button class="btn" id="copyLinkBtn" type="button">링크 복사</button>
-</div>
-</div>
+</div></div>
 </div>
 <script>
     // --- Utilities
@@ -1514,7 +1502,23 @@
       return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
     }
 
-    // --- Search + Scope filter
+    
+    // --- Responsive tables: add data-label for stacked mobile tables
+    function labelTables(){
+      $$("table").forEach(table => {
+        const headers = $$("thead th", table).map(th => th.textContent.trim());
+        if (!headers.length) return;
+        $$("tbody tr", table).forEach(tr => {
+          $$("td", tr).forEach((td, i) => {
+            td.setAttribute("data-label", headers[i] || "");
+          });
+        });
+      });
+    }
+    labelTables();
+
+
+// --- Search + Scope filter
     const q = $("#q");
     const clearBtn = $("#clearBtn");
     const filterables = $$("[data-filterable]");
@@ -1569,6 +1573,25 @@
         const id = href.slice(1);
         a.style.display = visibleIds.has(id) ? "" : "none";
       });
+
+      // Hide nav section titles that have no visible links
+      const nav = $("#sidebar .nav");
+      if (nav) {
+        const children = Array.from(nav.children);
+        for (let i = 0; i < children.length; i++) {
+          const el = children[i];
+          if (!el.classList || !el.classList.contains("nav-section-title")) continue;
+
+          let hasVisible = false;
+          for (let j = i + 1; j < children.length; j++) {
+            const sib = children[j];
+            if (sib.classList && sib.classList.contains("nav-section-title")) break;
+            if (sib.tagName === "A" && sib.style.display !== "none") { hasVisible = true; break; }
+          }
+          el.style.display = hasVisible ? "" : "none";
+        }
+      }
+
 
       // Filter footnote items by scope + visibility + search term
       const fnItems = $$("#footnotes .footnotes-list li");
